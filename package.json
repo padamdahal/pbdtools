@@ -1,0 +1,13 @@
+{
+  "name": "nepali-utilities",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build-menu.js",
+    "dev": "node build-menu.js && wrangler dev",
+    "deploy": "node build-menu.js && wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4"
+  }
+}
