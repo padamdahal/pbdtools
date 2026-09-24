@@ -1,2 +1,4 @@
 // wrangler.jsonc
-"name": "pbdtools",
+{
+"name": "pbdtools"
+}
