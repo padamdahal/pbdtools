@@ -3,22 +3,187 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Nepali Utilities</title>
-  <meta name="description" content="Small, fast tools for everyday tasks in Nepali.">
+  <title>Nepal Time Now, Weather &amp; Free Online Tools – Nepali Utilities</title>
+  <meta name="description" content="Check the current time in Nepal and worldwide, today's weather in Nepali cities, the date and a daily quote. Free tools like number to Nepali words.">
+  <meta name="theme-color" content="#c3dcea">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Nepal Time Now, Weather &amp; Free Online Tools">
+  <meta property="og:description" content="Live Nepal time, world clocks, weather in Nepali cities, daily quote and free everyday tools.">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🏔️%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700&display=swap">
   <link rel="stylesheet" href="/assets/style.css">
+  <link rel="stylesheet" href="/assets/home.css">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebSite","name":"Nepali Utilities","description":"Live Nepal time, world clocks, weather in Nepali cities, a daily quote and free everyday tools.","inLanguage":["en","ne"]}
+  </script>
 </head>
 <body>
+  <a class="skip" href="#today">Skip to today's widgets</a>
   <header class="site-header">
     <div class="bar">
       <a class="brand" href="/">Nepali Utilities</a>
       <nav id="menu" aria-label="Tools"></nav>
     </div>
   </header>
-  <main>
-    <h1>Small tools for everyday tasks</h1>
-    <p class="lead">Free, fast and ad-free. Pick a tool below.</p>
-    <div id="tool-list" class="tool-list"></div>
+
+  <main class="home">
+    <section class="hero" aria-labelledby="hero-h">
+      <div class="hero-inner">
+        <div>
+          <h1 id="hero-h">Nepal time, weather and everyday tools in one place</h1>
+          <p class="lead">See the current time in Kathmandu and around the world, check today's weather in Nepali cities, read a daily quote and use free tools such as a number to Nepali words converter.</p>
+          <div class="hero-links">
+            <a class="pill solid" href="#today">See today's widgets</a>
+            <a class="pill" href="#tools">Browse tools</a>
+          </div>
+        </div>
+        <div class="now-card" aria-label="Current time in Nepal">
+          <div class="now-label"><span class="dot" aria-hidden="true"></span>Kathmandu, Nepal (UTC+5:45)</div>
+          <div class="now-time"><span id="npt-time">--:--:--</span><small id="npt-ap"></small></div>
+          <p class="now-date" id="npt-date">Loading date</p>
+        </div>
+      </div>
+      <svg class="ridge" viewBox="0 0 1440 150" preserveAspectRatio="none" aria-hidden="true">
+        <path class="far" d="M0 150V78l90-34 70 26 120-58 80 46 90-36 110 60 100-44 120 62 90-40 110 52 100-34 110 44 130-38 90 34 100-26 30 12v88z"/>
+        <path class="mid" d="M0 150V104l110-30 90 32 120-44 100 40 110-34 90 30 130-38 110 36 100-30 120 34 100-28 90 30 120-24 60 26v76z"/>
+        <path class="near" d="M0 150v-22l160-24 140 20 180-22 160 18 200-20 170 20 200-18 150 16 80-10v42z"/>
+      </svg>
+    </section>
+
+    <section class="section" id="today" aria-labelledby="today-h">
+      <h2 id="today-h">Today at a glance</h2>
+      <p class="sub">Live clocks, weather and the date, updated in your browser. Nothing to sign up for.</p>
+      <div class="grid">
+        <article class="card clocks" aria-labelledby="clk-h">
+          <div class="card-head">
+            <h3 id="clk-h">World clocks</h3>
+            <div class="seg" role="group" aria-label="Time format">
+              <button type="button" data-fmt="12" aria-pressed="true">12h</button>
+              <button type="button" data-fmt="24" aria-pressed="false">24h</button>
+            </div>
+          </div>
+          <ul id="clock-list" class="clock-list"></ul>
+        </article>
+
+        <article class="card weather" aria-labelledby="wx-h">
+          <div class="card-head">
+            <h3 id="wx-h">Weather in Nepal</h3>
+            <label class="sr" for="wx-city">City</label>
+            <select id="wx-city"></select>
+          </div>
+          <div class="wx-main">
+            <span class="wx-icon" id="wx-icon" aria-hidden="true">🌡️</span>
+            <div>
+              <div class="wx-temp"><span id="wx-temp">--</span><sup>°C</sup></div>
+              <div class="wx-desc" id="wx-desc" aria-live="polite">Loading weather</div>
+            </div>
+          </div>
+          <dl class="wx-stats">
+            <div><dt>Feels like</dt><dd id="wx-feels">--</dd></div>
+            <div><dt>Today's range</dt><dd id="wx-range">--</dd></div>
+            <div><dt>Humidity</dt><dd id="wx-hum">--</dd></div>
+            <div><dt>Wind</dt><dd id="wx-wind">--</dd></div>
+          </dl>
+          <p class="credit">Weather data by <a href="https://open-meteo.com/">Open-Meteo.com</a></p>
+        </article>
+
+        <article class="card datecard" aria-labelledby="date-h">
+          <div class="card-head"><h3 id="date-h">Today's date</h3></div>
+          <div class="date-main">
+            <div class="date-day" id="d-day">--</div>
+            <div>
+              <p class="date-week" id="d-weekday"></p>
+              <p id="d-month"></p>
+              <p class="date-ne" id="d-ne" lang="ne"></p>
+            </div>
+          </div>
+          <div class="yearbar" aria-hidden="true"><i id="d-bar"></i></div>
+          <p class="date-stats"><span id="d-doy"></span><span id="d-week"></span><span id="d-left"></span></p>
+        </article>
+
+        <article class="card quote" aria-labelledby="q-h">
+          <div class="card-head"><h3 id="q-h">Quote of the day</h3></div>
+          <blockquote aria-live="polite">
+            <p class="q-ne" id="q-ne" lang="ne"></p>
+            <p class="q-en" id="q-en"></p>
+          </blockquote>
+          <button type="button" class="btn" id="q-next">Show another</button>
+        </article>
+      </div>
+      <noscript><p>Live clocks, weather and the date need JavaScript. Enable it to see them.</p></noscript>
+    </section>
+
+    <section class="section" id="tools" aria-labelledby="tools-h">
+      <h2 id="tools-h">Free online tools</h2>
+      <p class="sub">Simple tools that work in your browser. New ones are added here as they are published.</p>
+      <div id="tool-list" class="tool-list cards">
+        <a href="/number-to-nepali-words/">
+          <strong>Number to Nepali words</strong>
+          <span>Type a number and get it written in Nepali words, using lakh, crore, arba and kharba.</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="section" id="nepal-time" aria-labelledby="npt-h">
+      <h2 id="npt-h">About Nepal Standard Time</h2>
+      <p>Nepal Standard Time (NPT) is UTC+5:45, one of the few time zones in the world that sits at a 45-minute offset. That makes Nepal 15 minutes ahead of India (UTC+5:30) and 5 hours 45 minutes ahead of Coordinated Universal Time. Nepal does not observe daylight saving time, so the offset stays the same all year.</p>
+      <p>If you work, study or have family abroad, the difference changes with the season on the other side. The table shows how Nepal compares with places where many Nepalis live and work.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Place</th><th>Time zone</th><th>Nepal is</th></tr></thead>
+          <tbody>
+            <tr><td>India (New Delhi)</td><td>UTC+5:30</td><td>15 minutes ahead</td></tr>
+            <tr><td>UAE (Dubai)</td><td>UTC+4</td><td>1 hour 45 minutes ahead</td></tr>
+            <tr><td>Qatar (Doha), Saudi Arabia (Riyadh)</td><td>UTC+3</td><td>2 hours 45 minutes ahead</td></tr>
+            <tr><td>Malaysia (Kuala Lumpur)</td><td>UTC+8</td><td>2 hours 15 minutes behind</td></tr>
+            <tr><td>Japan (Tokyo)</td><td>UTC+9</td><td>3 hours 15 minutes behind</td></tr>
+            <tr><td>Australia (Sydney)</td><td>UTC+10, UTC+11 in summer</td><td>4 hours 15 minutes to 5 hours 15 minutes behind</td></tr>
+            <tr><td>United Kingdom (London)</td><td>UTC+0, UTC+1 in summer</td><td>4 hours 45 minutes to 5 hours 45 minutes ahead</td></tr>
+            <tr><td>USA (New York)</td><td>UTC-5, UTC-4 in summer</td><td>9 hours 45 minutes to 10 hours 45 minutes ahead</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The world clocks above always show the exact current difference, including any daylight saving change.</p>
+    </section>
+
+    <section class="section" id="numbers" aria-labelledby="num-h">
+      <h2 id="num-h">The Nepali number system</h2>
+      <p>Nepal groups large numbers in a pattern that differs from the international one. After the first three digits, digits are grouped in pairs: 1,00,000 is one <span lang="ne">लाख</span> (lakh), 1,00,00,000 is one <span lang="ne">करोड</span> (crore), and the names continue with <span lang="ne">अर्ब</span> (arba) and <span lang="ne">खर्ब</span> (kharba). For example, 1,50,000 is <span lang="ne">एक लाख पचास हजार</span>.</p>
+      <p>Writing amounts in words is common on cheques, contracts, receipts and forms. Use the <a href="/number-to-nepali-words/">number to Nepali words converter</a> to do it instantly, including decimals and Nepali digits.</p>
+    </section>
+
+    <section class="section" id="faq" aria-labelledby="faq-h">
+      <h2 id="faq-h">Frequently asked questions</h2>
+      <details>
+        <summary>What is the current time in Nepal?</summary>
+        <p>The live clock at the top of this page shows the current time in Kathmandu. Nepal uses a single time zone, UTC+5:45, across the whole country.</p>
+      </details>
+      <details>
+        <summary>Does Nepal use daylight saving time?</summary>
+        <p>No. Nepal keeps the same time all year, so only the difference with countries that change their clocks varies during the year.</p>
+      </details>
+      <details>
+        <summary>How do I write a number in Nepali words?</summary>
+        <p>Open the <a href="/number-to-nepali-words/">number to Nepali words tool</a>, type the number in English or Nepali digits, and copy the result.</p>
+      </details>
+      <details>
+        <summary>Does this site collect my data?</summary>
+        <p>There are no accounts. Your chosen city and 12-hour or 24-hour preference are saved only in your own browser. The weather request is sent with the coordinates of the city you select, not your location.</p>
+      </details>
+    </section>
   </main>
+
+  <footer class="site-footer">
+    <div class="bar">
+      <p>© <span id="yr"></span> Nepali Utilities</p>
+      <nav id="footer-menu" aria-label="Footer tools"></nav>
+    </div>
+  </footer>
+
   <script src="/assets/menu.js" defer></script>
+  <script src="/assets/home.js" defer></script>
 </body>
 </html>
