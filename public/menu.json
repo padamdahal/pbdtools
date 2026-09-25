@@ -1,0 +1,12 @@
+[
+  {
+    "title": "Number to Nepali words",
+    "description": "Type a number and get it written in Nepali words (अंकमा शब्द).",
+    "path": "/number-to-nepali-words/"
+  },
+  {
+    "title": "type-in-nepali-unicode",
+    "description": "",
+    "path": "/type-in-nepali-unicode/"
+  }
+]

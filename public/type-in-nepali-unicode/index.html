@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>नेपाली टाइप गर्नुहोस् — Nepali Typing Tool</title>
+<style>
+  :root{
+    --paper:#f6f3ec; --ink:#20241f; --rule:#c9c2ab;
+    --moss:#3f5d44; --moss-dark:#2c4230; --clay:#a8542f; --panel:#fffdf8;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family: Georgia, 'Noto Serif Devanagari', 'Mangal', serif;
+    display:flex; justify-content:center; padding:28px 16px;
+  }
+  .wrap{ width:100%; max-width:920px; }
+  header{
+    display:flex; align-items:baseline; justify-content:space-between;
+    border-bottom:2px solid var(--ink); padding-bottom:10px; margin-bottom:8px;
+    flex-wrap:wrap; gap:6px;
+  }
+  h1{ font-size:1.5rem; margin:0; font-weight:normal; letter-spacing:0.01em; }
+  h1 .sub{
+    display:block; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size:0.72rem; color:#6b6455; letter-spacing:0.03em; margin-top:2px;
+  }
+  .scheme-toggle{
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size:0.8rem; background:none; border:1px solid var(--rule); border-radius:3px;
+    padding:5px 10px; color:var(--moss-dark); cursor:pointer;
+  }
+  .scheme-toggle:hover{ border-color:var(--moss); }
+  .hint{
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size:0.78rem; color:#6b6455; margin:0 0 10px;
+  }
+  .panels{ display:flex; gap:14px; flex-wrap:wrap; }
+  .panel{ flex:1 1 300px; display:flex; flex-direction:column; }
+  .panel label{
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size:0.72rem; letter-spacing:0.03em; color:#6b6455; margin-bottom:4px;
+  }
+  textarea{
+    width:100%; min-height:220px; font-size:1.25rem; line-height:1.7; padding:14px;
+    border:1px solid var(--rule); border-radius:4px; background:var(--panel); color:var(--ink);
+    resize:vertical; font-family: Georgia, 'Noto Serif Devanagari', 'Mangal', serif;
+  }
+  #roman{ font-family: Georgia, serif; }
+  textarea:focus{ outline:none; border-color:var(--moss); box-shadow:0 0 0 3px rgba(63,93,68,0.12); }
+  textarea[readonly]{ background:#fbf9f3; }
+  .toolbar{
+    display:flex; gap:8px; margin-top:10px; flex-wrap:wrap; align-items:center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  button.action{ background:var(--moss); color:#fff; border:none; padding:8px 14px; border-radius:3px; font-size:0.85rem; cursor:pointer; }
+  button.action:hover{ background:var(--moss-dark); }
+  button.action.secondary{ background:none; color:var(--moss-dark); border:1px solid var(--rule); }
+  button.action.secondary:hover{ border-color:var(--moss); }
+  label.numtoggle{ font-size:0.8rem; color:#57503f; display:flex; align-items:center; gap:5px; margin-left:auto; }
+  .copied-flag{ font-size:0.78rem; color:var(--moss-dark); opacity:0; transition:opacity .2s; }
+  .copied-flag.show{ opacity:1; }
+  .cheatsheet{
+    margin-top:22px; border-top:1px solid var(--rule); padding-top:14px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size:0.82rem; color:#4b4638; display:none;
+  }
+  .cheatsheet.show{ display:block; }
+  .cheatsheet table{ border-collapse:collapse; width:100%; margin-top:8px;}
+  .cheatsheet td{ padding:4px 8px; border-bottom:1px solid #e6e0cf; }
+  .cheatsheet td.roman{ font-family: Georgia, serif; font-style:italic; color:var(--clay); width:70px;}
+  .cheatsheet td.dev{ font-size:1.1rem; }
+  .cheatsheet h2{ font-size:0.85rem; margin:14px 0 2px; color:var(--moss-dark); font-weight:bold;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>नेपाली टाइप गर्नुहोस्<span class="sub">Type Roman letters — get Nepali Unicode, live</span></h1>
+    <button class="scheme-toggle" id="toggleHelp">Typing guide</button>
+  </header>
+  <p class="hint">Type in the left box. To fix a word, click it in the Nepali box — the matching word gets selected on the left so you can correct it.</p>
+
+  <div class="panels">
+    <div class="panel">
+      <label>ROMAN INPUT</label>
+      <textarea id="roman" placeholder="yahaa type garnus... (e.g. namaste, kasto chha)" autofocus spellcheck="false"></textarea>
+    </div>
+    <div class="panel">
+      <label>नेपाली (click a word to correct it)</label>
+      <textarea id="nepali" readonly spellcheck="false"></textarea>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <button class="action" id="copyBtn">Copy Nepali text</button>
+    <button class="action secondary" id="clearBtn">Clear</button>
+    <label class="numtoggle"><input type="checkbox" id="numToggle"> Convert numbers (0-9 → ०-९)</label>
+    <span class="copied-flag" id="copiedFlag">Copied</span>
+  </div>
+
+  <div class="cheatsheet" id="cheatsheet">
+    <h2>Vowels</h2>
+    <table>
+      <tr><td class="roman">a / aa</td><td class="dev">अ / आ</td><td class="roman">i / ii, ee</td><td class="dev">इ / ई</td></tr>
+      <tr><td class="roman">u / uu, oo</td><td class="dev">उ / ऊ</td><td class="roman">e / ai</td><td class="dev">ए / ऐ</td></tr>
+      <tr><td class="roman">o / au</td><td class="dev">ओ / औ</td><td class="roman">ri</td><td class="dev">ऋ</td></tr>
+    </table>
+    <h2>Consonants</h2>
+    <table>
+      <tr><td class="roman">k / kh</td><td class="dev">क / ख</td><td class="roman">g / gh</td><td class="dev">ग / घ</td></tr>
+      <tr><td class="roman">ch / chh</td><td class="dev">च / छ</td><td class="roman">j / jh</td><td class="dev">ज / झ</td></tr>
+      <tr><td class="roman">T / Th (capital)</td><td class="dev">ट / ठ</td><td class="roman">D / Dh (capital)</td><td class="dev">ड / ढ</td></tr>
+      <tr><td class="roman">N (capital)</td><td class="dev">ण</td><td class="roman">t / th</td><td class="dev">त / थ</td></tr>
+      <tr><td class="roman">d / dh</td><td class="dev">द / ध</td><td class="roman">n / p / ph</td><td class="dev">न / प / फ</td></tr>
+      <tr><td class="roman">b / bh / m</td><td class="dev">ब / भ / म</td><td class="roman">y / r / l / v</td><td class="dev">य / र / ल / व</td></tr>
+      <tr><td class="roman">sh</td><td class="dev">श</td><td class="roman">Sh (capital)</td><td class="dev">ष</td></tr>
+      <tr><td class="roman">s / h</td><td class="dev">स / ह</td><td class="roman">ksh / gya / tr</td><td class="dev">क्ष / ज्ञ / त्र</td></tr>
+    </table>
+    <h2>Special</h2>
+    <table>
+      <tr><td class="roman">M</td><td class="dev">ं (anusvara)</td><td class="roman">:</td><td class="dev">ः (visarga)</td></tr>
+      <tr><td class="roman">'</td><td class="dev" colspan="3">forces halant ् right after a consonant</td></tr>
+    </table>
+  </div>
+</div>
+
+<script>
+(function(){
+  var consonants = {
+    'ksh':'क्ष','gya':'ज्ञ','chh':'छ',
+    'kh':'ख','gh':'घ','ng':'ङ','ch':'च','jh':'झ','ny':'ञ',
+    'Th':'ठ','Dh':'ढ','th':'थ','dh':'ध','ph':'फ','bh':'भ',
+    'sh':'श','Sh':'ष','tr':'त्र',
+    'k':'क','g':'ग','j':'ज','T':'ट','D':'ड','N':'ण',
+    't':'त','d':'द','n':'न','p':'प','f':'फ','b':'ब',
+    'm':'म','y':'य','r':'र','l':'ल','v':'व','w':'व',
+    's':'स','h':'ह','x':'क्ष'
+  };
+  var vowelsIndependent = {
+    'aa':'आ','ee':'ई','ii':'ई','oo':'ऊ','uu':'ऊ',
+    'ai':'ऐ','au':'औ','ri':'ऋ',
+    'a':'अ','i':'इ','u':'उ','e':'ए','o':'ओ'
+  };
+  var matras = {
+    'aa':'ा','ee':'ी','ii':'ी','oo':'ू','uu':'ू',
+    'ai':'ै','au':'ौ','ri':'ृ',
+    'a':'','i':'ि','u':'ु','e':'े','o':'ो'
+  };
+  var devConsonantSet = 'कखगघङचछजझञटठडढणतथदधनपफबभमयरलवशषसह';
+  var devDigits = ['०','१','२','३','४','५','६','७','८','९'];
+
+  function isBareDevConsonant(ch){ return devConsonantSet.indexOf(ch) !== -1; }
+
+  function transliterate(text, convertNumbers){
+    var result = '', pending = false, i = 0, n = text.length;
+    while(i < n){
+      var matched = false;
+      for(var len = 3; len >= 1 && !matched; len--){
+        var sub = text.substr(i, len);
+        if(consonants.hasOwnProperty(sub)){
+          if(pending) result += '्';
+          result += consonants[sub];
+          pending = true; i += len; matched = true;
+        }
+      }
+      if(matched) continue;
+      for(var vlen = 2; vlen >= 1 && !matched; vlen--){
+        var vsub = text.substr(i, vlen);
+        if(vowelsIndependent.hasOwnProperty(vsub)){
+          if(pending) result += matras[vsub];
+          else result += vowelsIndependent[vsub];
+          pending = false; i += vlen; matched = true;
+        }
+      }
+      if(matched) continue;
+      var ch = text[i];
+      if(ch === 'M'){ result += 'ं'; pending = false; i++; continue; }
+      if(ch === "'"){ if(pending){ result += '्'; pending = false; } i++; continue; }
+      if(ch === ':'){ result += 'ः'; pending = false; i++; continue; }
+      if(convertNumbers && ch >= '0' && ch <= '9'){
+        result += devDigits[ch.charCodeAt(0) - 48]; pending = false; i++; continue;
+      }
+      result += ch;
+      pending = isBareDevConsonant(ch);
+      i++;
+    }
+    return result;
+  }
+
+  var romanBox = document.getElementById('roman');
+  var nepaliBox = document.getElementById('nepali');
+  var numToggle = document.getElementById('numToggle');
+  var flag = document.getElementById('copiedFlag');
+
+  // word tokenizer: keeps whitespace runs as separate tokens so word i in
+  // roman lines up with word i in the converted output.
+  function tokenize(text){
+    return text.match(/(\s+|\S+)/g) || [];
+  }
+
+  function convertAll(){
+    var tokens = tokenize(romanBox.value);
+    var out = tokens.map(function(tok){
+      return /^\s+$/.test(tok) ? tok : transliterate(tok, numToggle.checked);
+    }).join('');
+    nepaliBox.value = out;
+  }
+
+  romanBox.addEventListener('input', convertAll);
+  numToggle.addEventListener('change', convertAll);
+
+  // Clicking a word in the Nepali box selects the matching word in the Roman box.
+  nepaliBox.addEventListener('click', function(){
+    var pos = nepaliBox.selectionStart;
+    var romanTokens = tokenize(romanBox.value);
+    var idx = 0, matchedTokenIndex = -1, matchStart = 0, matchEnd = 0;
+    for(var i=0;i<romanTokens.length;i++){
+      var tok = romanTokens[i];
+      var display = /^\s+$/.test(tok) ? tok : transliterate(tok, numToggle.checked);
+      var start = idx, end = idx + display.length;
+      if(!/^\s+$/.test(tok) && pos >= start && pos <= end){
+        matchedTokenIndex = i; matchStart = start; matchEnd = end;
+      }
+      idx = end;
+    }
+    if(matchedTokenIndex === -1) return;
+
+    // find the same word's character range in the ROMAN text
+    var rIdx = 0, rStart = 0, rEnd = 0;
+    for(var j=0;j<romanTokens.length;j++){
+      var tokLen = romanTokens[j].length;
+      if(j === matchedTokenIndex){ rStart = rIdx; rEnd = rIdx + tokLen; break; }
+      rIdx += tokLen;
+    }
+    romanBox.focus();
+    romanBox.setSelectionRange(rStart, rEnd);
+  });
+
+  document.getElementById('clearBtn').addEventListener('click', function(){
+    romanBox.value = '';
+    nepaliBox.value = '';
+    romanBox.focus();
+  });
+
+  document.getElementById('copyBtn').addEventListener('click', function(){
+    var text = nepaliBox.value;
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(showCopied, function(){ legacyCopy(text); });
+    } else {
+      legacyCopy(text);
+    }
+  });
+  function legacyCopy(text){
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.focus(); ta.select();
+    try{ document.execCommand('copy'); }catch(e){}
+    document.body.removeChild(ta);
+    showCopied();
+  }
+  function showCopied(){
+    flag.classList.add('show');
+    setTimeout(function(){ flag.classList.remove('show'); }, 1200);
+  }
+
+  document.getElementById('toggleHelp').addEventListener('click', function(){
+    document.getElementById('cheatsheet').classList.toggle('show');
+  });
+})();
+</script>
+</body>
+</html>
