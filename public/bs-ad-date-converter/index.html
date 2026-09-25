@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="ne">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BS to AD Date Converter – Bikram Sambat ↔ Gregorian</title>
+  <meta name="menu-title" content="BS ↔ AD date converter">
+  <meta name="description" content="Convert any date between Bikram Sambat (BS) and Gregorian (AD). Essential for forms, banks and official documents in Nepal.">
+  <meta name="theme-color" content="#c3dcea">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🏔️%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="/assets/style.css">
+  <style>
+    .conv-grid {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: var(--s-4);
+      align-items: start;
+    }
+    @media (max-width: 640px) {
+      .conv-grid { grid-template-columns: 1fr; }
+      .conv-arrow { display: none; }
+    }
+    .conv-panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: var(--s-5);
+      box-shadow: var(--shadow-sm);
+    }
+    .conv-panel h2 {
+      margin: 0 0 var(--s-4);
+      font-size: 1.1rem;
+      letter-spacing: 0;
+    }
+    .conv-arrow {
+      align-self: center;
+      color: var(--muted);
+      font-size: 1.4rem;
+      padding-top: 28px;
+      text-align: center;
+      user-select: none;
+    }
+    .date-row {
+      display: grid;
+      grid-template-columns: 1.1fr 1.4fr 0.9fr;
+      gap: 10px;
+    }
+    .date-row select,
+    .date-row input {
+      font-size: 1.05rem;
+      padding: 10px 12px;
+    }
+    .today-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: var(--s-5);
+      padding: var(--s-4) var(--s-5);
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+    }
+    .today-bar strong { font-size: 1.05rem; }
+    .today-bar .sep { color: var(--line-strong); }
+    .out-line {
+      margin-top: var(--s-4);
+      padding-top: var(--s-3);
+      border-top: 1px solid var(--line);
+      min-height: 3.2em;
+    }
+    .out-line .big {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin: 0 0 2px;
+    }
+    .out-line .sub { color: var(--muted); font-size: 0.92rem; margin: 0; }
+    .swap-btn { margin-top: 2px; }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#tool">Skip to tool</a>
+  <header class="site-header">
+    <div class="bar">
+      <a class="brand" href="/">Nepali Utilities</a>
+      <nav id="menu" aria-label="Tools"></nav>
+    </div>
+  </header>
+
+  <main class="narrow" id="tool" style="max-width: 820px">
+    <div class="page-intro">
+      <h1>BS ↔ AD date converter</h1>
+      <p class="lead">Convert any date between Bikram Sambat (विक्रम संवत्) and the Gregorian calendar (AD). Useful for forms, banks, citizenship papers and contracts in Nepal.</p>
+    </div>
+
+    <div class="today-bar" id="today-bar" aria-live="polite">
+      <span class="muted">Today</span>
+      <strong id="today-bs">—</strong>
+      <span class="sep" aria-hidden="true">·</span>
+      <strong id="today-ad">—</strong>
+      <button type="button" class="btn btn-sm btn-ghost swap-btn" id="use-today-bs">Use as BS</button>
+      <button type="button" class="btn btn-sm btn-ghost swap-btn" id="use-today-ad">Use as AD</button>
+    </div>
+
+    <div class="conv-grid">
+      <section class="conv-panel" aria-labelledby="bs-h">
+        <h2 id="bs-h">Bikram Sambat (BS)</h2>
+        <div class="date-row">
+          <div class="field" style="margin:0">
+            <label for="bs-y">Year</label>
+            <input id="bs-y" type="number" inputmode="numeric" min="2000" max="2090" placeholder="2081">
+          </div>
+          <div class="field" style="margin:0">
+            <label for="bs-m">Month</label>
+            <select id="bs-m"></select>
+          </div>
+          <div class="field" style="margin:0">
+            <label for="bs-d">Day</label>
+            <select id="bs-d"></select>
+          </div>
+        </div>
+        <div class="out-line" id="bs-out">
+          <p class="big" id="bs-out-main">—</p>
+          <p class="sub" id="bs-out-sub"></p>
+        </div>
+      </section>
+
+      <div class="conv-arrow" aria-hidden="true">⇄</div>
+
+      <section class="conv-panel" aria-labelledby="ad-h">
+        <h2 id="ad-h">Gregorian (AD)</h2>
+        <div class="date-row">
+          <div class="field" style="margin:0">
+            <label for="ad-y">Year</label>
+            <input id="ad-y" type="number" inputmode="numeric" min="1943" max="2034" placeholder="2024">
+          </div>
+          <div class="field" style="margin:0">
+            <label for="ad-m">Month</label>
+            <select id="ad-m"></select>
+          </div>
+          <div class="field" style="margin:0">
+            <label for="ad-d">Day</label>
+            <select id="ad-d"></select>
+          </div>
+        </div>
+        <div class="out-line" id="ad-out">
+          <p class="big" id="ad-out-main">—</p>
+          <p class="sub" id="ad-out-sub"></p>
+        </div>
+      </section>
+    </div>
+
+    <p id="hint" class="hint" aria-live="polite" style="margin-top:16px"></p>
+
+    <p class="note">Supports BS years 2000–2090 (AD 1943–2034). Month lengths follow the official Nepali calendar. Some historical edge days near year boundaries can differ by one day across sources — always double-check for legal documents.</p>
+  </main>
+
+  <footer class="site-footer">
+    <div class="bar">
+      <p>© <span id="yr"></span> Nepali Utilities</p>
+      <div class="footer-nav">
+        <nav id="footer-menu" aria-label="Footer tools"></nav>
+        <nav class="legal" aria-label="Legal">
+          <a href="/about/">About</a>
+          <a href="/privacy/">Privacy</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/bs-ad.js" defer></script>
+  <script src="/assets/menu.js" defer></script>
+</body>
+</html>
