@@ -19,7 +19,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 const root = "public";
-const DEFAULT_SITE_URL = "https://nepali-utilities.example.com";
+const DEFAULT_SITE_URL = "https://nepalitools.pbd.com.np";
 const siteUrl = (process.env.SITE_URL || DEFAULT_SITE_URL).replace(/\/$/, "");
 
 const meta = (html, name) =>
@@ -38,11 +38,11 @@ const isoDate = (filePath) => {
 
 const escapeXml = (s) =>
   String(s)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&apos;");
+    .replace(/&/g, "&")
+    .replace(/</g, "<")
+    .replace(/>/g, ">")
+    .replace(/"/g, """)
+    .replace(/'/g, "'");
 
 // --- collect pages ---
 const dirs = fs
