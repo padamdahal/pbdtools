@@ -3,15 +3,44 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Number to Nepali Words</title>
+  <title>Number to Nepali Words Converter – अंकबाट नेपाली शब्द</title>
+  <meta name="description" content="Convert any number to Nepali words online (अंकमा शब्द). Supports लाख, करोड, अर्ब, खर्ब and Nepali digits. Free and instant.">
+  <link rel="canonical" href="https://nepalitools.pbd.com.np/number-to-nepali-words/">
+  <meta name="robots" content="index, follow">
+  <meta name="keywords" content="number to Nepali words, अंकबाट शब्द, Nepali number converter, लाख करोड अर्ब">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Nepali Utilities">
+  <meta property="og:title" content="Number to Nepali Words Converter – अंकबाट नेपाली शब्द">
+  <meta property="og:description" content="Convert any number to Nepali words online (अंकमा शब्द). Supports लाख, करोड, अर्ब, खर्ब and Nepali digits. Free and instant.">
+  <meta property="og:url" content="https://nepalitools.pbd.com.np/number-to-nepali-words/">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="ne_NP">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Number to Nepali Words Converter – अंकबाट नेपाली शब्द">
+  <meta name="twitter:description" content="Convert any number to Nepali words online (अंकमा शब्द). Supports लाख, करोड, अर्ब, खर्ब and Nepali digits.">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"Number to Nepali Words Converter","url":"https://nepalitools.pbd.com.np/number-to-nepali-words/","description":"Convert any number to Nepali words online.","applicationCategory":"UtilityApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"NPR"},"inLanguage":["ne","en"]}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I convert a number to Nepali words?","acceptedAnswer":{"@type":"Answer","text":"Type any number in English or Nepali digits. The tool writes it in Nepali words using लाख, करोड, अर्ब and खर्ब where needed."}},{"@type":"Question","name":"Can I use Nepali digits like १२३?","acceptedAnswer":{"@type":"Answer","text":"Yes. You can enter English digits (123) or Nepali digits (१२३). Both are supported."}},{"@type":"Question","name":"Is this useful for cheques and documents?","acceptedAnswer":{"@type":"Answer","text":"Yes. Writing amounts in words is common for cheques, legal papers and official forms in Nepal. Always double-check important documents."}}]}
+  </script>
   <meta name="menu-title" content="Number to Nepali words">
-  <meta name="description" content="Type a number and get it written in Nepali words (अंकमा शब्द).">
   <meta name="theme-color" content="#c3dcea">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🏔️%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700&display=swap">
   <link rel="stylesheet" href="/assets/style.css">
+  <style>
+    .faq { margin-top: var(--s-5); }
+    .faq h2 { font-size: 1.15rem; margin-bottom: var(--s-3); }
+    .faq-item { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 8px; }
+    .faq-item summary { cursor: pointer; font-weight: 600; list-style: none; }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item p { margin: 8px 0 4px; color: var(--muted); font-size: 0.95rem; }
+    .related-tools { margin-top: var(--s-4); font-size: 0.95rem; }
+    .related-tools a { margin-right: 12px; }
+  </style>
 </head>
 <body>
   <a class="skip" href="#tool">Skip to tool</a>
@@ -46,6 +75,19 @@
       <button id="clear" class="btn btn-ghost" type="button">Clear</button>
     </div>
 
+    <section class="faq" aria-label="Frequently asked questions">
+      <h2>Frequently asked questions</h2>
+      <details class="faq-item"><summary>How do I convert a number to Nepali words?</summary><p>Type any number in English or Nepali digits. The tool writes it in Nepali words using लाख, करोड, अर्ब and खर्ब where needed.</p></details>
+      <details class="faq-item"><summary>Can I use Nepali digits like १२३?</summary><p>Yes. You can enter English digits (123) or Nepali digits (१२३). Both are supported.</p></details>
+      <details class="faq-item"><summary>Is this useful for cheques and documents?</summary><p>Yes. Writing amounts in words is common for cheques, legal papers and official forms in Nepal. Always double-check important documents.</p></details>
+    </section>
+
+    <p class="related-tools"><strong>Related:</strong>
+      <a href="/bs-ad-date-converter/">BS ↔ AD date converter</a>
+      <a href="/nepali-typing/">Nepali typing</a>
+      <a href="/">All tools</a>
+    </p>
+
     <p class="note">Some numbers have more than one accepted spelling in Nepali. This tool uses the common textbook forms. Digits are grouped the Nepali way (pairs after the first three).</p>
   </main>
 
@@ -63,119 +105,29 @@
   </footer>
 
   <script>
-    const NEP = [
-      "शून्य","एक","दुई","तीन","चार","पाँच","छ","सात","आठ","नौ",
-      "दश","एघार","बाह्र","तेह्र","चौध","पन्ध्र","सोह्र","सत्र","अठार","उन्नाइस",
-      "बीस","एक्काइस","बाइस","तेइस","चौबीस","पच्चीस","छब्बीस","सत्ताइस","अठ्ठाइस","उनन्तीस",
-      "तीस","एकतीस","बत्तीस","तेत्तीस","चौँतीस","पैँतीस","छत्तीस","सतत्तीस","अठतीस","उनन्चालीस",
-      "चालीस","एकचालीस","बयालीस","त्रिचालीस","चौवालीस","पैंतालीस","छयालीस","सतचालीस","अठचालीस","उनन्चास",
-      "पचास","एकाउन्न","बाउन्न","त्रिपन्न","चौवन्न","पचपन्न","छपन्न","सन्तावन्न","अन्ठावन्न","उनान्साठी",
-      "साठी","एकसट्ठी","बयसट्ठी","त्रिसट्ठी","चौसट्ठी","पैंसट्ठी","छयसट्ठी","सतसट्ठी","अठसट्ठी","उनन्सत्तरी",
-      "सत्तरी","एकहत्तर","बहत्तर","त्रिहत्तर","चौहत्तर","पचहत्तर","छयहत्तर","सत्हत्तर","अठहत्तर","उनासी",
-      "असी","एकासी","बयासी","त्रियासी","चौरासी","पचासी","छयासी","सतासी","अठासी","उनान्नब्बे",
-      "नब्बे","एकानब्बे","बयानब्बे","त्रियानब्बे","चौरानब्बे","पन्चानब्बे","छयानब्बे","सन्तानब्बे","अन्ठानब्बे","उनान्सय"
-    ];
+    const NEP = ["शून्य","एक","दुई","तीन","चार","पाँच","छ","सात","आठ","नौ","दश","एघार","बाह्र","तेह्र","चौध","पन्ध्र","सोह्र","सत्र","अठार","उन्नाइस","बीस","एक्काइस","बाइस","तेइस","चौबीस","पच्चीस","छब्बीस","सत्ताइस","अठ्ठाइस","उनन्तीस","तीस","एकतीस","बत्तीस","तेत्तीस","चौँतीस","पैँतीस","छत्तीस","सतत्तीस","अठतीस","उनन्चालीस","चालीस","एकचालीस","बयालीस","त्रिचालीस","चौवालीस","पैंतालीस","छयालीस","सतचालीस","अठचालीस","उनन्चास","पचास","एकाउन्न","बाउन्न","त्रिपन्न","चौवन्न","पचपन्न","छपन्न","सन्तावन्न","अन्ठावन्न","उनान्साठी","साठी","एकसट्ठी","बयसट्ठी","त्रिसट्ठी","चौसट्ठी","पैंसट्ठी","छयसट्ठी","सतसट्ठी","अठसट्ठी","उनन्सत्तरी","सत्तरी","एकहत्तर","बहत्तर","त्रिहत्तर","चौहत्तर","पचहत्तर","छयहत्तर","सत्हत्तर","अठहत्तर","उनासी","असी","एकासी","बयासी","त्रियासी","चौरासी","पचासी","छयासी","सतासी","अठासी","उनान्नब्बे","नब्बे","एकानब्बे","बयानब्बे","त्रियानब्बे","चौरानब्बे","पन्चानब्बे","छयानब्बे","सन्तानब्बे","अन्ठानब्बे","उनान्सय"];
     const UNITS = ["हजार","लाख","करोड","अर्ब","खर्ब","नील","पद्म","शंख"];
-
-    function below1000(n) {
-      const h = Math.floor(n / 100), r = n % 100, out = [];
-      if (h) out.push(NEP[h] + " सय");
-      if (r) out.push(NEP[r]);
-      return out.join(" ");
-    }
-
-    function toWords(big) {
-      if (big === 0n) return NEP[0];
-      const parts = [];
-      const low = Number(big % 1000n);
-      let rest = big / 1000n;
-      if (low) parts.push(below1000(low));
-      for (const unit of UNITS) {
-        if (rest === 0n) break;
-        const g = Number(rest % 100n);
-        rest /= 100n;
-        if (g) parts.unshift(NEP[g] + " " + unit);
-      }
-      return parts.join(" ");
-    }
-
-    function groupNepali(s) {
-      if (s.length <= 3) return s;
-      const head = s.slice(0, -3), tail = s.slice(-3);
-      return head.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + "," + tail;
-    }
-
+    function below1000(n) { const h = Math.floor(n / 100), r = n % 100, out = []; if (h) out.push(NEP[h] + " सय"); if (r) out.push(NEP[r]); return out.join(" "); }
+    function toWords(big) { if (big === 0n) return NEP[0]; const parts = []; const low = Number(big % 1000n); let rest = big / 1000n; if (low) parts.push(below1000(low)); for (const unit of UNITS) { if (rest === 0n) break; const g = Number(rest % 100n); rest /= 100n; if (g) parts.unshift(NEP[g] + " " + unit); } return parts.join(" "); }
+    function groupNepali(s) { if (s.length <= 3) return s; const head = s.slice(0, -3), tail = s.slice(-3); return head.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + "," + tail; }
     const $ = (id) => document.getElementById(id);
-    const input = $("num"), hint = $("hint"), digitsEl = $("digits");
-    const wordsEl = $("words"), copyBtn = $("copy"), out = $("out"), clearBtn = $("clear");
-
+    const input = $("num"), hint = $("hint"), digitsEl = $("digits"), wordsEl = $("words"), copyBtn = $("copy"), out = $("out"), clearBtn = $("clear");
     function update() {
-      hint.textContent = "";
-      hint.classList.remove("error", "ok");
-      digitsEl.textContent = "";
-      wordsEl.textContent = "";
-      copyBtn.disabled = true;
-      out.hidden = true;
-
-      let v = input.value
-        .replace(/[०-९]/g, (d) => "०१२३४५६७८९".indexOf(d))
-        .replace(/[,\s]/g, "");
-      if (!v) return;
-
-      const m = v.match(/^(-)?(\d+)(?:\.(\d+))?$/);
-      if (!m) {
-        hint.textContent = "Enter digits only, for example 250000 or 1,250.75";
-        hint.classList.add("error");
-        return;
-      }
-
-      const [, neg, whole, frac] = m;
-      const trimmed = whole.replace(/^0+(?=\d)/, "") || "0";
-      if (trimmed.length > 19) {
-        hint.textContent = "Too large. Use 19 digits or fewer.";
-        hint.classList.add("error");
-        return;
-      }
-      if (frac && frac.length > 15) {
-        hint.textContent = "Use 15 decimal digits or fewer.";
-        hint.classList.add("error");
-        return;
-      }
-
-      let words = toWords(BigInt(trimmed));
-      if (frac) words += " दशमलव " + [...frac].map((d) => NEP[+d]).join(" ");
-      if (neg) words = "ऋण " + words;
-
-      digitsEl.textContent = (neg ? "-" : "") + groupNepali(trimmed) + (frac ? "." + frac : "");
-      wordsEl.textContent = words;
-      copyBtn.disabled = false;
-      out.hidden = false;
+      hint.textContent = ""; hint.classList.remove("error", "ok"); digitsEl.textContent = ""; wordsEl.textContent = ""; copyBtn.disabled = true; out.hidden = true;
+      let v = input.value.replace(/[०-९]/g, (d) => "०१२३४५६७८९".indexOf(d)).replace(/[,\s]/g, ""); if (!v) return;
+      const m = v.match(/^(-)?(\d+)(?:\.(\d+))?$/); if (!m) { hint.textContent = "Enter digits only, for example 250000 or 1,250.75"; hint.classList.add("error"); return; }
+      const [, neg, whole, frac] = m; const trimmed = whole.replace(/^0+(?=\d)/, "") || "0";
+      if (trimmed.length > 19) { hint.textContent = "Too large. Use 19 digits or fewer."; hint.classList.add("error"); return; }
+      if (frac && frac.length > 15) { hint.textContent = "Use 15 decimal digits or fewer."; hint.classList.add("error"); return; }
+      let words = toWords(BigInt(trimmed)); if (frac) words += " दशमलव " + [...frac].map((d) => NEP[+d]).join(" "); if (neg) words = "ऋण " + words;
+      digitsEl.textContent = (neg ? "-" : "") + groupNepali(trimmed) + (frac ? "." + frac : ""); wordsEl.textContent = words; copyBtn.disabled = false; out.hidden = false;
     }
-
     input.addEventListener("input", update);
-    clearBtn.addEventListener("click", () => {
-      input.value = "";
-      update();
-      input.focus();
-    });
+    clearBtn.addEventListener("click", () => { input.value = ""; update(); input.focus(); });
     copyBtn.addEventListener("click", async () => {
-      try {
-        await navigator.clipboard.writeText(wordsEl.textContent);
-        copyBtn.textContent = "Copied";
-        hint.textContent = "Copied to clipboard";
-        hint.classList.add("ok");
-      } catch (e) {
-        copyBtn.textContent = "Copy failed";
-        hint.textContent = "Could not copy — select the text manually";
-        hint.classList.add("error");
-      }
-      setTimeout(() => {
-        copyBtn.textContent = "Copy words";
-        if (hint.classList.contains("ok")) {
-          hint.textContent = "";
-          hint.classList.remove("ok");
-        }
-      }, 1600);
+      try { await navigator.clipboard.writeText(wordsEl.textContent); copyBtn.textContent = "Copied"; hint.textContent = "Copied to clipboard"; hint.classList.add("ok"); }
+      catch (e) { copyBtn.textContent = "Copy failed"; hint.textContent = "Could not copy — select the text manually"; hint.classList.add("error"); }
+      setTimeout(() => { copyBtn.textContent = "Copy words"; if (hint.classList.contains("ok")) { hint.textContent = ""; hint.classList.remove("ok"); } }, 1600);
     });
   </script>
   <script src="/assets/menu.js" defer></script>
