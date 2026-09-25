@@ -3,9 +3,28 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>BS to AD Date Converter – Bikram Sambat ↔ Gregorian</title>
+  <title>BS to AD Date Converter Online – Bikram Sambat ↔ Gregorian</title>
+  <meta name="description" content="Free BS to AD and AD to BS date converter for Nepal. Convert Bikram Sambat to Gregorian (and back) for banks, forms and official documents.">
+  <link rel="canonical" href="https://nepalitools.pbd.com.np/bs-ad-date-converter/">
+  <meta name="robots" content="index, follow">
+  <meta name="keywords" content="BS to AD converter, AD to BS, Bikram Sambat converter, Nepali date converter, विक्रम संवत">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Nepali Utilities">
+  <meta property="og:title" content="BS to AD Date Converter Online – Bikram Sambat ↔ Gregorian">
+  <meta property="og:description" content="Free BS to AD and AD to BS date converter for Nepal. Convert Bikram Sambat to Gregorian (and back) for banks, forms and official documents.">
+  <meta property="og:url" content="https://nepalitools.pbd.com.np/bs-ad-date-converter/">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="ne_NP">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="BS to AD Date Converter Online – Bikram Sambat ↔ Gregorian">
+  <meta name="twitter:description" content="Free BS to AD and AD to BS date converter for Nepal. Convert Bikram Sambat to Gregorian (and back) for banks, forms and official documents.">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"BS to AD Date Converter Online","url":"https://nepalitools.pbd.com.np/bs-ad-date-converter/","description":"Free BS to AD and AD to BS date converter for Nepal.","applicationCategory":"UtilityApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"NPR"},"inLanguage":["ne","en"]}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I convert BS to AD?","acceptedAnswer":{"@type":"Answer","text":"Enter a Bikram Sambat date and convert to AD. The tool uses a verified calendar table for Gregorian results used in banks and official forms in Nepal."}},{"@type":"Question","name":"What BS years are supported?","acceptedAnswer":{"@type":"Answer","text":"The converter covers a practical range used for everyday documents in Nepal (approximately BS 2000–2090)."}},{"@type":"Question","name":"Is Bikram Sambat the same as the Nepali calendar?","acceptedAnswer":{"@type":"Answer","text":"Yes. Bikram Sambat (BS) is the official calendar used in Nepal. AD is the Gregorian calendar used internationally."}},{"@type":"Question","name":"Do I need to install software?","acceptedAnswer":{"@type":"Answer","text":"No. This BS to AD and AD to BS converter works fully online in your browser."}}]}
+  </script>
   <meta name="menu-title" content="BS ↔ AD date converter">
-  <meta name="description" content="Convert any date between Bikram Sambat (BS) and Gregorian (AD). Essential for forms, banks and official documents in Nepal.">
   <meta name="theme-color" content="#c3dcea">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🏔️%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,73 +32,28 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700&display=swap">
   <link rel="stylesheet" href="/assets/style.css">
   <style>
-    .conv-grid {
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      gap: var(--s-4);
-      align-items: start;
-    }
-    @media (max-width: 640px) {
-      .conv-grid { grid-template-columns: 1fr; }
-      .conv-arrow { display: none; }
-    }
-    .conv-panel {
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: var(--s-5);
-      box-shadow: var(--shadow-sm);
-    }
-    .conv-panel h2 {
-      margin: 0 0 var(--s-4);
-      font-size: 1.1rem;
-      letter-spacing: 0;
-    }
-    .conv-arrow {
-      align-self: center;
-      color: var(--muted);
-      font-size: 1.4rem;
-      padding-top: 28px;
-      text-align: center;
-      user-select: none;
-    }
-    .date-row {
-      display: grid;
-      grid-template-columns: 1.1fr 1.4fr 0.9fr;
-      gap: 10px;
-    }
-    .date-row select,
-    .date-row input {
-      font-size: 1.05rem;
-      padding: 10px 12px;
-    }
-    .today-bar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-      margin-bottom: var(--s-5);
-      padding: var(--s-4) var(--s-5);
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-sm);
-    }
+    .conv-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: var(--s-4); align-items: start; }
+    @media (max-width: 640px) { .conv-grid { grid-template-columns: 1fr; } .conv-arrow { display: none; } }
+    .conv-panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: var(--s-5); box-shadow: var(--shadow-sm); }
+    .conv-panel h2 { margin: 0 0 var(--s-4); font-size: 1.1rem; letter-spacing: 0; }
+    .conv-arrow { align-self: center; color: var(--muted); font-size: 1.4rem; padding-top: 28px; text-align: center; user-select: none; }
+    .date-row { display: grid; grid-template-columns: 1.1fr 1.4fr 0.9fr; gap: 10px; }
+    .date-row select, .date-row input { font-size: 1.05rem; padding: 10px 12px; }
+    .today-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: var(--s-5); padding: var(--s-4) var(--s-5); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-sm); }
     .today-bar strong { font-size: 1.05rem; }
     .today-bar .sep { color: var(--line-strong); }
-    .out-line {
-      margin-top: var(--s-4);
-      padding-top: var(--s-3);
-      border-top: 1px solid var(--line);
-      min-height: 3.2em;
-    }
-    .out-line .big {
-      font-size: 1.25rem;
-      font-weight: 700;
-      margin: 0 0 2px;
-    }
+    .out-line { margin-top: var(--s-4); padding-top: var(--s-3); border-top: 1px solid var(--line); min-height: 3.2em; }
+    .out-line .big { font-size: 1.25rem; font-weight: 700; margin: 0 0 2px; }
     .out-line .sub { color: var(--muted); font-size: 0.92rem; margin: 0; }
     .swap-btn { margin-top: 2px; }
+    .faq { margin-top: var(--s-5); }
+    .faq h2 { font-size: 1.15rem; margin-bottom: var(--s-3); }
+    .faq-item { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 8px; }
+    .faq-item summary { cursor: pointer; font-weight: 600; list-style: none; }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item p { margin: 8px 0 4px; color: var(--muted); font-size: 0.95rem; }
+    .related-tools { margin-top: var(--s-4); font-size: 0.95rem; }
+    .related-tools a { margin-right: 12px; }
   </style>
 </head>
 <body>
@@ -155,6 +129,20 @@
     </div>
 
     <p id="hint" class="hint" aria-live="polite" style="margin-top:16px"></p>
+
+    <section class="faq" aria-label="Frequently asked questions">
+      <h2>Frequently asked questions</h2>
+      <details class="faq-item"><summary>How do I convert BS to AD?</summary><p>Enter a Bikram Sambat date and convert to AD. The tool uses a verified calendar table for Gregorian results used in banks and official forms in Nepal.</p></details>
+      <details class="faq-item"><summary>What BS years are supported?</summary><p>The converter covers a practical range used for everyday documents in Nepal (approximately BS 2000–2090).</p></details>
+      <details class="faq-item"><summary>Is Bikram Sambat the same as the Nepali calendar?</summary><p>Yes. Bikram Sambat (BS) is the official calendar used in Nepal. AD is the Gregorian calendar used internationally.</p></details>
+      <details class="faq-item"><summary>Do I need to install software?</summary><p>No. This BS to AD and AD to BS converter works fully online in your browser.</p></details>
+    </section>
+
+    <p class="related-tools"><strong>Related:</strong>
+      <a href="/nepali-typing/">Nepali typing</a>
+      <a href="/number-to-nepali-words/">Number to Nepali words</a>
+      <a href="/">All tools</a>
+    </p>
 
     <p class="note">Supports BS years 2000–2090 (AD 1943–2034). Month lengths follow the official Nepali calendar. Some historical edge days near year boundaries can differ by one day across sources — always double-check for legal documents.</p>
   </main>
