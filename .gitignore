@@ -1,5 +1,4 @@
 node_modules
 .wrangler
+# menu.json is always regenerated at build; keep it out of git noise
 public/menu.json
-public/sitemap.xml
-public/robots.txt
