@@ -36,13 +36,10 @@ const isoDate = (filePath) => {
   }
 };
 
-const escapeXml = (s) =>
-  String(s)
-    .replace(/&/g, "&")
-    .replace(/</g, "<")
-    .replace(/>/g, ">")
-    .replace(/"/g, """)
-    .replace(/'/g, "'");
+const escapeXml = (s) => {
+  const map = { "&": "&" + "amp;", "<": "&" + "lt;", ">": "&" + "gt;", '"': "&" + "quot;", "'": "&" + "apos;" };
+  return String(s).replace(/[&<>"']/g, (c) => map[c]);
+};
 
 // --- collect pages ---
 const dirs = fs
