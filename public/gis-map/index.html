@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>GIS Map – Upload GeoJSON, Switch Basemaps, Export PNG/PDF</title>
+  <title>GIS Map – GeoJSON, CSV Join &amp; Gradient Choropleth</title>
   <meta name="menu-title" content="GIS map">
-  <meta name="description" content="Interactive GIS map with free basemap layers. Upload GeoJSON, explore features, and export as PNG or PDF — all in your browser.">
+  <meta name="description" content="Interactive GIS map: free basemaps, upload GeoJSON and CSV, join by unique fields, and visualize values with a color gradient. Export PNG or PDF.">
   <meta name="theme-color" content="#c3dcea">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🗺️%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,18 +16,23 @@
   <style>
     .gis-layout {
       display: grid;
-      grid-template-columns: minmax(260px, 320px) 1fr;
+      grid-template-columns: minmax(280px, 340px) 1fr;
       gap: var(--s-4);
       align-items: stretch;
       min-height: 560px;
     }
-    @media (max-width: 800px) {
+    @media (max-width: 860px) {
       .gis-layout { grid-template-columns: 1fr; min-height: 0; }
     }
     .gis-side {
       display: flex;
       flex-direction: column;
       gap: var(--s-4);
+      max-height: calc(100vh - 140px);
+      overflow: auto;
+    }
+    @media (max-width: 860px) {
+      .gis-side { max-height: none; }
     }
     .gis-panel {
       background: var(--surface);
@@ -51,27 +56,17 @@
       overflow: hidden;
       box-shadow: var(--shadow-sm);
       background: #dbe4ea;
-      min-height: 520px;
+      min-height: 560px;
     }
-    #map { height: 100%; min-height: 520px; width: 100%; }
-    @media (max-width: 800px) {
+    #map { height: 100%; min-height: 560px; width: 100%; }
+    @media (max-width: 860px) {
       .map-wrap, #map { min-height: 420px; }
     }
-    .basemap-list {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
+    .basemap-list { display: flex; flex-direction: column; gap: 6px; }
     .basemap-list label {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 10px;
-      border-radius: 10px;
-      border: 1px solid transparent;
-      cursor: pointer;
-      font-size: 0.95rem;
-      transition: background .15s, border-color .15s;
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 10px; border-radius: 10px;
+      border: 1px solid transparent; cursor: pointer; font-size: 0.95rem;
     }
     .basemap-list label:hover { background: var(--bg); }
     .basemap-list label:has(input:checked) {
@@ -83,7 +78,7 @@
     .dropzone {
       border: 2px dashed var(--line-strong);
       border-radius: var(--radius);
-      padding: var(--s-5) var(--s-4);
+      padding: var(--s-4);
       text-align: center;
       background: var(--bg);
       transition: border-color .15s, background .15s;
@@ -93,66 +88,79 @@
       border-color: var(--accent);
       background: color-mix(in srgb, var(--accent) 10%, var(--bg));
     }
-    .dropzone p { margin: 0 0 6px; font-size: 0.95rem; }
-    .dropzone .muted { margin: 0; font-size: 0.85rem; }
+    .dropzone p { margin: 0 0 4px; font-size: 0.92rem; }
+    .dropzone .muted { margin: 0; font-size: 0.82rem; }
+    .dropzone + .dropzone { margin-top: 10px; }
     .layer-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
     .layer-item {
       display: grid;
       grid-template-columns: auto 1fr auto;
-      gap: 8px;
-      align-items: center;
+      gap: 8px; align-items: center;
       padding: 8px 10px;
       border: 1px solid var(--line);
       border-radius: 10px;
       background: var(--bg);
-      font-size: 0.92rem;
+      font-size: 0.9rem;
     }
     .layer-item .name { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .layer-item .meta { color: var(--muted); font-size: 0.8rem; }
+    .layer-item .meta { color: var(--muted); font-size: 0.78rem; }
     .layer-item button {
-      border: 0;
-      background: transparent;
-      color: var(--muted);
-      cursor: pointer;
-      padding: 4px 6px;
-      border-radius: 6px;
-      font-size: 0.85rem;
+      border: 0; background: transparent; color: var(--muted);
+      cursor: pointer; padding: 4px 6px; border-radius: 6px; font-size: 0.85rem;
     }
     .layer-item button:hover { background: var(--surface); color: var(--ink); }
-    .swatch {
-      width: 14px; height: 14px; border-radius: 4px;
-      border: 1px solid rgba(0,0,0,.15);
-      flex-shrink: 0;
-    }
-    .toolbar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
+    .swatch { width: 14px; height: 14px; border-radius: 4px; border: 1px solid rgba(0,0,0,.15); flex-shrink: 0; }
+    .toolbar { display: flex; flex-wrap: wrap; gap: 8px; }
     .toolbar .btn { flex: 1 1 auto; min-width: 0; }
-    .status {
-      font-size: 0.85rem;
-      color: var(--muted);
-      min-height: 1.2em;
-      margin: 0;
-    }
+    .status { font-size: 0.85rem; color: var(--muted); min-height: 1.2em; margin: 8px 0 0; }
     .status.error { color: #b42318; }
     .legend-hint { font-size: 0.85rem; color: var(--muted); margin: 0; }
+    .join-fields { display: flex; flex-direction: column; gap: 10px; }
+    .join-fields .field { margin: 0; }
+    .join-fields label { font-size: 0.85rem; }
+    .join-fields select { font-size: 0.95rem; }
+    .gradient-bar {
+      height: 12px;
+      border-radius: 6px;
+      background: linear-gradient(90deg, #edf8fb, #b2e2e2, #66c2a4, #2ca25f, #006d2c);
+      border: 1px solid var(--line);
+      margin: 8px 0 4px;
+    }
+    .gradient-labels {
+      display: flex; justify-content: space-between;
+      font-size: 0.78rem; color: var(--muted);
+    }
+    .map-legend {
+      position: absolute;
+      bottom: 28px; right: 12px;
+      z-index: 500;
+      background: rgba(255,255,255,.92);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px 12px;
+      box-shadow: var(--shadow-sm);
+      min-width: 140px;
+      font-size: 0.8rem;
+      display: none;
+    }
+    .map-legend strong { display: block; margin-bottom: 6px; font-size: 0.85rem; }
+    .map-legend .bar {
+      height: 10px; border-radius: 4px;
+      background: linear-gradient(90deg, #edf8fb, #b2e2e2, #66c2a4, #2ca25f, #006d2c);
+      margin-bottom: 4px;
+    }
+    .map-legend .ends { display: flex; justify-content: space-between; color: #555; }
     .leaflet-popup-content { margin: 10px 14px; font-family: inherit; font-size: 0.9rem; }
     .leaflet-popup-content table { border-collapse: collapse; width: 100%; }
     .leaflet-popup-content td { padding: 2px 6px 2px 0; vertical-align: top; }
     .leaflet-popup-content td:first-child { color: var(--muted); white-space: nowrap; padding-right: 10px; }
     .leaflet-container { font-family: inherit; }
     .map-credit {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      z-index: 500;
-      pointer-events: none;
-      font-size: 10px;
-      color: #333;
+      position: absolute; bottom: 0; left: 0; right: 0;
+      z-index: 500; pointer-events: none;
+      font-size: 10px; color: #333;
       background: rgba(255,255,255,.75);
-      padding: 2px 8px;
-      text-align: right;
+      padding: 2px 8px; text-align: right;
     }
   </style>
 </head>
@@ -165,10 +173,10 @@
     </div>
   </header>
 
-  <main class="narrow" id="tool" style="max-width: 1100px">
+  <main class="narrow" id="tool" style="max-width: 1140px">
     <div class="page-intro">
       <h1>GIS map</h1>
-      <p class="lead">Load free basemap layers, upload your GeoJSON, explore features, and export the map as PNG or PDF. Everything runs in your browser — files stay on your device.</p>
+      <p class="lead">Upload GeoJSON boundaries, join a CSV by unique ID fields, and color features with a value gradient. Switch free basemaps and export PNG or PDF — all in your browser.</p>
     </div>
 
     <div class="gis-layout">
@@ -179,13 +187,43 @@
         </section>
 
         <section class="gis-panel">
-          <h2>Your data</h2>
-          <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Upload GeoJSON file">
-            <p><strong>Drop GeoJSON here</strong></p>
-            <p class="muted">or click to choose a .geojson / .json file</p>
-            <input type="file" id="file" accept=".geojson,.json,application/geo+json,application/json" hidden>
+          <h2>Map data (GeoJSON)</h2>
+          <div class="dropzone" id="drop-geo" tabindex="0" role="button" aria-label="Upload GeoJSON">
+            <p><strong>Drop GeoJSON</strong></p>
+            <p class="muted">.geojson / .json — polygons, lines or points</p>
+            <input type="file" id="file-geo" accept=".geojson,.json,application/geo+json,application/json" hidden>
           </div>
           <ul class="layer-list" id="layer-list" style="margin-top:12px"></ul>
+        </section>
+
+        <section class="gis-panel">
+          <h2>CSV data + join</h2>
+          <div class="dropzone" id="drop-csv" tabindex="0" role="button" aria-label="Upload CSV">
+            <p><strong>Drop CSV</strong></p>
+            <p class="muted">First row = headers. UTF-8 recommended.</p>
+            <input type="file" id="file-csv" accept=".csv,text/csv,text/plain" hidden>
+          </div>
+          <div class="join-fields" id="join-fields" style="margin-top:12px;display:none">
+            <div class="field">
+              <label for="map-key">Map feature field (unique ID)</label>
+              <select id="map-key"></select>
+            </div>
+            <div class="field">
+              <label for="csv-key">CSV field (unique ID)</label>
+              <select id="csv-key"></select>
+            </div>
+            <div class="field">
+              <label for="csv-value">CSV value field (numeric)</label>
+              <select id="csv-value"></select>
+            </div>
+            <div class="field">
+              <label for="map-layer">Apply to layer</label>
+              <select id="map-layer"></select>
+            </div>
+            <button type="button" class="btn btn-primary" id="btn-join" style="width:100%">Apply gradient</button>
+            <div class="gradient-bar" aria-hidden="true"></div>
+            <div class="gradient-labels"><span>Low</span><span>High</span></div>
+          </div>
           <p class="status" id="status" aria-live="polite"></p>
         </section>
 
@@ -194,22 +232,27 @@
           <div class="toolbar">
             <button type="button" class="btn btn-primary" id="btn-png">PNG</button>
             <button type="button" class="btn" id="btn-pdf">PDF</button>
-            <button type="button" class="btn btn-ghost" id="btn-fit" title="Fit map to data">Fit data</button>
-            <button type="button" class="btn btn-ghost" id="btn-clear" title="Remove all uploaded layers">Clear</button>
+            <button type="button" class="btn btn-ghost" id="btn-fit">Fit data</button>
+            <button type="button" class="btn btn-ghost" id="btn-clear">Clear</button>
           </div>
-          <p class="legend-hint" style="margin-top:10px">PNG/PDF capture the current view. Wait a second after changing the basemap so tiles finish loading.</p>
+          <p class="legend-hint" style="margin-top:10px">PNG/PDF capture the current view. Prefer OpenStreetMap or Carto for clean exports.</p>
         </section>
       </aside>
 
       <div class="map-wrap">
         <div id="map" role="application" aria-label="Interactive map"></div>
+        <div class="map-legend" id="map-legend">
+          <strong id="legend-title">Value</strong>
+          <div class="bar"></div>
+          <div class="ends"><span id="legend-min">—</span><span id="legend-max">—</span></div>
+        </div>
         <div class="map-credit" id="map-credit"></div>
       </div>
     </div>
 
     <p class="note" style="margin-top:20px">
-      Basemaps are free public tile services (OpenStreetMap and others). Uploaded GeoJSON is read only in your browser and is never sent to a server.
-      For best PNG/PDF results, use the OpenStreetMap or Carto layers (CORS-friendly). Satellite imagery may leave blank tiles in exports.
+      Workflow: upload GeoJSON → upload CSV → pick matching ID fields and a numeric value → Apply gradient.
+      Files never leave your device. Basemaps are free public tile services.
     </p>
   </main>
 
