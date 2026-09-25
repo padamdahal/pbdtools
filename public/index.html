@@ -44,9 +44,6 @@
           <div class="now-label"><span class="dot" aria-hidden="true"></span>Kathmandu, Nepal (UTC+5:45)</div>
           <div class="now-time"><span id="npt-time">--:--:--</span><small id="npt-ap"></small></div>
           <p class="now-date" id="npt-date">Loading date</p>
-          <p>&nbsp;</p>
-          <div class="meromiti-widget" data-theme="light" data-bg="transparent" data-border="0"></div>
-          <script src="https://meromiti.com/widget.js" async></script>
         </div>
       </div>
       <svg class="ridge" viewBox="0 0 1440 150" preserveAspectRatio="none" aria-hidden="true">
@@ -107,13 +104,18 @@
           <p class="date-stats"><span id="d-doy"></span><span id="d-week"></span><span id="d-left"></span></p>
         </article>
 
-        <article class="card quote" aria-labelledby="q-h">
+        <article class="card" aria-labelledby="q-h">
           <div class="card-head"><h3 id="q-h">Quote of the day</h3></div>
           <blockquote aria-live="polite">
             <p class="q-ne" id="q-ne" lang="ne"></p>
             <p class="q-en" id="q-en"></p>
           </blockquote>
           <button type="button" class="btn" id="q-next">Show another</button>
+        </article>
+        <article aria-labelledby="q-h" class="card">
+          <div class="card-head"><h3 id="q-h">Nepali Calendar</h3></div>
+          <div class="meromiti-widget" data-type="month" data-border="0"></div>
+          <script src="https://meromiti.com/widget.js" async></script>
         </article>
       </div>
       <noscript><p>Live clocks, weather and the date need JavaScript. Enable it to see them.</p></noscript>
