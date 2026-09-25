@@ -87,7 +87,7 @@
             <div><dt>Humidity</dt><dd id="wx-hum">--</dd></div>
             <div><dt>Wind</dt><dd id="wx-wind">--</dd></div>
           </dl>
-          <p class="credit">Weather data by <a href="https://open-meteo.com/">Open-Meteo.com</a></p>
+          <p class="credit">Weather data by <a href="https://www.weatherapi.com/" title="Weather API">WeatherAPI.com</a></p>
         </article>
 
         <article class="card datecard" aria-labelledby="date-h">
@@ -104,18 +104,13 @@
           <p class="date-stats"><span id="d-doy"></span><span id="d-week"></span><span id="d-left"></span></p>
         </article>
 
-        <article class="card" aria-labelledby="q-h">
+        <article class="card quote" aria-labelledby="q-h">
           <div class="card-head"><h3 id="q-h">Quote of the day</h3></div>
           <blockquote aria-live="polite">
             <p class="q-ne" id="q-ne" lang="ne"></p>
             <p class="q-en" id="q-en"></p>
           </blockquote>
           <button type="button" class="btn" id="q-next">Show another</button>
-        </article>
-        <article aria-labelledby="q-h" class="card">
-          <div class="card-head"><h3 id="q-h">Nepali Calendar</h3></div>
-          <div class="meromiti-widget" data-type="month" data-border="0"></div>
-          <script src="https://meromiti.com/widget.js" async></script>
         </article>
       </div>
       <noscript><p>Live clocks, weather and the date need JavaScript. Enable it to see them.</p></noscript>
@@ -184,7 +179,13 @@
   <footer class="site-footer">
     <div class="bar">
       <p>© <span id="yr"></span> Nepali Utilities</p>
-      <nav id="footer-menu" aria-label="Footer tools"></nav>
+      <div class="footer-nav">
+        <nav id="footer-menu" aria-label="Footer tools"></nav>
+        <nav class="legal" aria-label="Legal">
+          <a href="/about/">About</a>
+          <a href="/privacy/">Privacy</a>
+        </nav>
+      </div>
     </div>
   </footer>
 

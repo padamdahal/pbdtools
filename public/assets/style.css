@@ -58,6 +58,10 @@ h1 { font-size: clamp(1.7rem, 5vw, 2.4rem); line-height: 1.2; margin: 0 0 8px; }
 .site-footer { border-top: 1px solid var(--line); margin-top: 48px; color: var(--muted); font-size: 0.95rem; }
 .site-footer .bar { justify-content: space-between; padding-top: 22px; padding-bottom: 22px; }
 .site-footer p { margin: 0; }
+.footer-nav { display: flex; flex-wrap: wrap; gap: 8px 26px; align-items: center; }
+#footer-menu, .legal { display: flex; flex-wrap: wrap; gap: 4px 18px; }
+.legal a { color: var(--muted); text-decoration: none; }
+.legal a:hover { color: var(--ink); }
 
 /* generic list of tools */
 .tool-list { border-top: 1px solid var(--line); }

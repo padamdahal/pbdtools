@@ -143,61 +143,57 @@
   function pickQuote(doy) { qi = doy % QUOTES.length; showQuote(); }
   $("#q-next").addEventListener("click", () => { qi = (qi + 1) % QUOTES.length; showQuote(); });
 
-  /* ---------- weather (Open-Meteo, no API key) ---------- */
-  const CITIES = [
-    { n: "Kathmandu", lat: 27.7172, lon: 85.324 },
-    { n: "Pokhara", lat: 28.2096, lon: 83.9856 },
-    { n: "Biratnagar", lat: 26.4525, lon: 87.2718 },
-    { n: "Birgunj", lat: 27.0104, lon: 84.877 },
-    { n: "Janakpur", lat: 26.7288, lon: 85.926 },
-    { n: "Butwal", lat: 27.7006, lon: 83.4483 },
-    { n: "Nepalgunj", lat: 28.05, lon: 81.6167 },
-    { n: "Dhangadhi", lat: 28.6833, lon: 80.6 },
-  ];
-  const WMO = (c) => {
-    if (c === 0) return ["Clear sky", "☀️"];
-    if (c === 1) return ["Mainly clear", "🌤️"];
-    if (c === 2) return ["Partly cloudy", "⛅"];
-    if (c === 3) return ["Overcast", "☁️"];
-    if (c === 45 || c === 48) return ["Fog", "🌫️"];
-    if (c >= 51 && c <= 57) return ["Drizzle", "🌦️"];
-    if (c >= 61 && c <= 67) return ["Rain", "🌧️"];
-    if (c >= 71 && c <= 77) return ["Snow", "🌨️"];
-    if (c >= 80 && c <= 82) return ["Rain showers", "🌦️"];
-    if (c === 85 || c === 86) return ["Snow showers", "🌨️"];
-    if (c >= 95) return ["Thunderstorm", "⛈️"];
-    return ["Unknown", "🌡️"];
+  /* ---------- weather (WeatherAPI.com, free tier) ---------- */
+  // Get a free key at https://www.weatherapi.com/signup.aspx (1M calls/month,
+  // free tier allows commercial/ad-supported sites). In their dashboard, under
+  // API Keys, restrict the key to your domain so it can't be used elsewhere.
+  const WEATHER_API_KEY = "YOUR_WEATHERAPI_KEY";
+
+  const CITIES = ["Kathmandu", "Pokhara", "Biratnagar", "Birgunj", "Janakpur", "Butwal", "Nepalgunj", "Dhangadhi"];
+  const ICONS = {
+    1000: "☀️", 1003: "⛅", 1006: "☁️", 1009: "☁️", 1030: "🌫️", 1063: "🌦️",
+    1066: "🌨️", 1069: "🌨️", 1072: "🌧️", 1087: "⛈️", 1114: "🌨️", 1117: "❄️",
+    1135: "🌫️", 1147: "🌫️", 1150: "🌦️", 1153: "🌦️", 1168: "🌧️", 1171: "🌧️",
+    1180: "🌦️", 1183: "🌧️", 1186: "🌧️", 1189: "🌧️", 1192: "🌧️", 1195: "🌧️",
+    1198: "🌧️", 1201: "🌧️", 1204: "🌨️", 1207: "🌨️", 1210: "🌨️", 1213: "🌨️",
+    1216: "🌨️", 1219: "🌨️", 1222: "❄️", 1225: "❄️", 1237: "🌨️", 1240: "🌦️",
+    1243: "🌧️", 1246: "🌧️", 1249: "🌨️", 1252: "🌨️", 1255: "🌨️", 1258: "❄️",
+    1261: "🌨️", 1264: "🌨️", 1273: "⛈️", 1276: "⛈️", 1279: "⛈️", 1282: "⛈️",
   };
 
   const sel = $("#wx-city");
-  for (const c of CITIES) { const o = document.createElement("option"); o.value = c.n; o.textContent = c.n; sel.appendChild(o); }
+  for (const c of CITIES) { const o = document.createElement("option"); o.value = c; o.textContent = c; sel.appendChild(o); }
   const saved = store.get("city", "Kathmandu");
-  sel.value = CITIES.some((c) => c.n === saved) ? saved : "Kathmandu";
+  sel.value = CITIES.includes(saved) ? saved : "Kathmandu";
   sel.addEventListener("change", () => { store.set("city", sel.value); loadWeather(); });
 
   let wxToken = 0;
   async function loadWeather() {
-    const city = CITIES.find((c) => c.n === sel.value) || CITIES[0];
+    const city = sel.value;
     const token = ++wxToken;
     $("#wx-desc").textContent = "Loading weather";
+    if (!WEATHER_API_KEY || WEATHER_API_KEY === "YOUR_WEATHERAPI_KEY") {
+      $("#wx-desc").textContent = "Weather needs a WeatherAPI.com key. Add one in home.js.";
+      return;
+    }
     const ctl = new AbortController();
     const timer = setTimeout(() => ctl.abort(), 9000);
     try {
-      const url = "https://api.open-meteo.com/v1/forecast?latitude=" + city.lat + "&longitude=" + city.lon +
-        "&current=temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m" +
-        "&daily=temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=1";
+      const url = "https://api.weatherapi.com/v1/forecast.json?key=" + encodeURIComponent(WEATHER_API_KEY) +
+        "&q=" + encodeURIComponent(city + ", Nepal") + "&days=1&aqi=no&alerts=no";
       const res = await fetch(url, { signal: ctl.signal });
-      if (!res.ok) throw new Error("HTTP " + res.status);
       const j = await res.json();
       if (token !== wxToken) return;
-      const c = j.current, [desc, icon] = WMO(c.weather_code);
+      if (!res.ok || j.error) throw new Error((j.error && j.error.message) || "HTTP " + res.status);
+      const c = j.current, day = j.forecast.forecastday[0].day;
+      const icon = ICONS[c.condition.code] || "🌡️";
       $("#wx-icon").textContent = icon;
-      $("#wx-temp").textContent = Math.round(c.temperature_2m);
-      $("#wx-desc").textContent = desc + " in " + city.n;
-      $("#wx-feels").textContent = Math.round(c.apparent_temperature) + "°C";
-      $("#wx-hum").textContent = Math.round(c.relative_humidity_2m) + "%";
-      $("#wx-wind").textContent = Math.round(c.wind_speed_10m) + " km/h";
-      $("#wx-range").textContent = Math.round(j.daily.temperature_2m_min[0]) + "° / " + Math.round(j.daily.temperature_2m_max[0]) + "°C";
+      $("#wx-temp").textContent = Math.round(c.temp_c);
+      $("#wx-desc").textContent = c.condition.text + " in " + city;
+      $("#wx-feels").textContent = Math.round(c.feelslike_c) + "°C";
+      $("#wx-hum").textContent = Math.round(c.humidity) + "%";
+      $("#wx-wind").textContent = Math.round(c.wind_kph) + " km/h";
+      $("#wx-range").textContent = Math.round(day.mintemp_c) + "° / " + Math.round(day.maxtemp_c) + "°C";
     } catch (e) {
       if (token !== wxToken) return;
       $("#wx-desc").textContent = "Weather is unavailable right now. Check your connection and try again.";

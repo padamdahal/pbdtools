@@ -12,6 +12,11 @@ const meta = (html, name) =>
 const items = fs
   .readdirSync(root, { withFileTypes: true })
   .filter((d) => d.isDirectory() && fs.existsSync(path.join(root, d.name, "index.html")))
+  .filter((d) => {
+    const html = fs.readFileSync(path.join(root, d.name, "index.html"), "utf8");
+    // Pages like /privacy/ and /about/ opt out of the tools menu with this tag.
+    return !/<meta\s+name=["']menu-hide["']\s+content=["']true["']/i.test(html);
+  })
   .map((d) => {
     const html = fs.readFileSync(path.join(root, d.name, "index.html"), "utf8");
     return {

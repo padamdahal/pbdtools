@@ -6,6 +6,9 @@
   <title>Number to Nepali Words</title>
   <meta name="menu-title" content="Number to Nepali words">
   <meta name="description" content="Type a number and get it written in Nepali words (अंकमा शब्द).">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700&display=swap">
   <link rel="stylesheet" href="/assets/style.css">
 </head>
 <body>
@@ -15,7 +18,8 @@
       <nav id="menu" aria-label="Tools"></nav>
     </div>
   </header>
-  <main>
+
+  <main class="narrow">
     <h1>Number to Nepali words</h1>
     <p class="lead">Type a number in English or Nepali digits. Works up to 19 digits, with decimals.</p>
 
@@ -27,7 +31,7 @@
       <p id="digits" class="digits"></p>
       <p id="words" class="words" lang="ne"></p>
     </section>
-    <button id="copy" type="button" disabled>Copy words</button>
+    <button id="copy" class="btn" type="button" disabled>Copy words</button>
 
     <p class="note">Some numbers have more than one accepted spelling in Nepali. This tool uses the common textbook forms.</p>
   </main>
@@ -117,6 +121,19 @@
       setTimeout(() => (copyBtn.textContent = "Copy words"), 1500);
     });
   </script>
+  <footer class="site-footer">
+    <div class="bar">
+      <p>© <span id="yr"></span> Nepali Utilities</p>
+      <div class="footer-nav">
+        <nav id="footer-menu" aria-label="Footer tools"></nav>
+        <nav class="legal" aria-label="Legal">
+          <a href="/about/">About</a>
+          <a href="/privacy/">Privacy</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
   <script src="/assets/menu.js" defer></script>
 </body>
 </html>
