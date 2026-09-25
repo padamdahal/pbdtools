@@ -1,6 +1,7 @@
 User-agent: *
 Allow: /
 
+# Privacy policy is noindex; keep crawlers off it
 Disallow: /privacy/
 
 Sitemap: https://nepalitools.pbd.com.np/sitemap.xml

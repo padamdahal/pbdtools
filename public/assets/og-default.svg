@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#0f172a"/>
+  <rect width="1200" height="12" fill="#38bdf8"/>
+  <rect y="618" width="1200" height="12" fill="#38bdf8"/>
+  <text x="600" y="260" text-anchor="middle" font-family="system-ui,sans-serif" font-size="64" font-weight="700" fill="#f8fafc">Nepali Utilities</text>
+  <text x="600" y="320" text-anchor="middle" font-family="system-ui,sans-serif" font-size="32" fill="#94a3b8">Free online tools for Nepal</text>
+  <text x="600" y="390" text-anchor="middle" font-family="system-ui,sans-serif" font-size="24" fill="#38bdf8">BS↔AD · Nepali typing · Number to words · GIS map</text>
+  <text x="600" y="540" text-anchor="middle" font-family="system-ui,sans-serif" font-size="24" fill="#64748b">nepalitools.pbd.com.np</text>
+</svg>
