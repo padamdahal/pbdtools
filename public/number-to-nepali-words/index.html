@@ -6,12 +6,15 @@
   <title>Number to Nepali Words</title>
   <meta name="menu-title" content="Number to Nepali words">
   <meta name="description" content="Type a number and get it written in Nepali words (अंकमा शब्द).">
+  <meta name="theme-color" content="#c3dcea">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🏔️%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700&display=swap">
   <link rel="stylesheet" href="/assets/style.css">
 </head>
 <body>
+  <a class="skip" href="#tool">Skip to tool</a>
   <header class="site-header">
     <div class="bar">
       <a class="brand" href="/">Nepali Utilities</a>
@@ -19,22 +22,45 @@
     </div>
   </header>
 
-  <main class="narrow">
-    <h1>Number to Nepali words</h1>
-    <p class="lead">Type a number in English or Nepali digits. Works up to 19 digits, with decimals.</p>
+  <main class="narrow" id="tool">
+    <div class="page-intro">
+      <h1>Number to Nepali words</h1>
+      <p class="lead">Type a number in English or Nepali digits. Works up to 19 digits, with decimals — using लाख, करोड, अर्ब and खर्ब.</p>
+    </div>
 
-    <label for="num">Number / संख्या</label>
-    <input id="num" type="text" inputmode="decimal" autocomplete="off" placeholder="1234567" autofocus>
-    <p id="hint" class="hint" aria-live="polite"></p>
+    <div class="field">
+      <label for="num">Number / संख्या</label>
+      <input id="num" type="text" inputmode="decimal" autocomplete="off" placeholder="12,34,567 or १२३४५६७" autofocus>
+      <p id="hint" class="hint" aria-live="polite"></p>
+    </div>
 
-    <section class="result" aria-live="polite">
-      <p id="digits" class="digits"></p>
+    <section class="result" aria-live="polite" id="out" hidden>
+      <p class="result-label">Formatted</p>
+      <p id="digits" class="digits tabular"></p>
+      <p class="result-label" style="margin-top:12px">In words</p>
       <p id="words" class="words" lang="ne"></p>
     </section>
-    <button id="copy" class="btn" type="button" disabled>Copy words</button>
 
-    <p class="note">Some numbers have more than one accepted spelling in Nepali. This tool uses the common textbook forms.</p>
+    <div class="actions">
+      <button id="copy" class="btn btn-primary" type="button" disabled>Copy words</button>
+      <button id="clear" class="btn btn-ghost" type="button">Clear</button>
+    </div>
+
+    <p class="note">Some numbers have more than one accepted spelling in Nepali. This tool uses the common textbook forms. Digits are grouped the Nepali way (pairs after the first three).</p>
   </main>
+
+  <footer class="site-footer">
+    <div class="bar">
+      <p>© <span id="yr"></span> Nepali Utilities</p>
+      <div class="footer-nav">
+        <nav id="footer-menu" aria-label="Footer tools"></nav>
+        <nav class="legal" aria-label="Legal">
+          <a href="/about/">About</a>
+          <a href="/privacy/">Privacy</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
 
   <script>
     const NEP = [
@@ -49,7 +75,6 @@
       "असी","एकासी","बयासी","त्रियासी","चौरासी","पचासी","छयासी","सतासी","अठासी","उनान्नब्बे",
       "नब्बे","एकानब्बे","बयानब्बे","त्रियानब्बे","चौरानब्बे","पन्चानब्बे","छयानब्बे","सन्तानब्बे","अन्ठानब्बे","उनान्सय"
     ];
-    // After the last three digits, Nepali groups numbers in pairs of digits.
     const UNITS = ["हजार","लाख","करोड","अर्ब","खर्ब","नील","पद्म","शंख"];
 
     function below1000(n) {
@@ -74,7 +99,6 @@
       return parts.join(" ");
     }
 
-    // 1234567 -> 12,34,567
     function groupNepali(s) {
       if (s.length <= 3) return s;
       const head = s.slice(0, -3), tail = s.slice(-3);
@@ -82,11 +106,16 @@
     }
 
     const $ = (id) => document.getElementById(id);
-    const input = $("num"), hint = $("hint"), digitsEl = $("digits"), wordsEl = $("words"), copyBtn = $("copy");
+    const input = $("num"), hint = $("hint"), digitsEl = $("digits");
+    const wordsEl = $("words"), copyBtn = $("copy"), out = $("out"), clearBtn = $("clear");
 
     function update() {
-      hint.textContent = ""; hint.classList.remove("error");
-      digitsEl.textContent = ""; wordsEl.textContent = ""; copyBtn.disabled = true;
+      hint.textContent = "";
+      hint.classList.remove("error", "ok");
+      digitsEl.textContent = "";
+      wordsEl.textContent = "";
+      copyBtn.disabled = true;
+      out.hidden = true;
 
       let v = input.value
         .replace(/[०-९]/g, (d) => "०१२३४५६७८९".indexOf(d))
@@ -94,12 +123,24 @@
       if (!v) return;
 
       const m = v.match(/^(-)?(\d+)(?:\.(\d+))?$/);
-      if (!m) { hint.textContent = "Enter digits only, for example 250000 or 1,250.75"; hint.classList.add("error"); return; }
+      if (!m) {
+        hint.textContent = "Enter digits only, for example 250000 or 1,250.75";
+        hint.classList.add("error");
+        return;
+      }
 
       const [, neg, whole, frac] = m;
-      const trimmed = whole.replace(/^0+(?=\d)/, "");
-      if (trimmed.length > 19) { hint.textContent = "Too large. Use 19 digits or fewer."; hint.classList.add("error"); return; }
-      if (frac && frac.length > 15) { hint.textContent = "Use 15 decimal digits or fewer."; hint.classList.add("error"); return; }
+      const trimmed = whole.replace(/^0+(?=\d)/, "") || "0";
+      if (trimmed.length > 19) {
+        hint.textContent = "Too large. Use 19 digits or fewer.";
+        hint.classList.add("error");
+        return;
+      }
+      if (frac && frac.length > 15) {
+        hint.textContent = "Use 15 decimal digits or fewer.";
+        hint.classList.add("error");
+        return;
+      }
 
       let words = toWords(BigInt(trimmed));
       if (frac) words += " दशमलव " + [...frac].map((d) => NEP[+d]).join(" ");
@@ -108,32 +149,35 @@
       digitsEl.textContent = (neg ? "-" : "") + groupNepali(trimmed) + (frac ? "." + frac : "");
       wordsEl.textContent = words;
       copyBtn.disabled = false;
+      out.hidden = false;
     }
 
     input.addEventListener("input", update);
+    clearBtn.addEventListener("click", () => {
+      input.value = "";
+      update();
+      input.focus();
+    });
     copyBtn.addEventListener("click", async () => {
       try {
         await navigator.clipboard.writeText(wordsEl.textContent);
         copyBtn.textContent = "Copied";
+        hint.textContent = "Copied to clipboard";
+        hint.classList.add("ok");
       } catch (e) {
         copyBtn.textContent = "Copy failed";
+        hint.textContent = "Could not copy — select the text manually";
+        hint.classList.add("error");
       }
-      setTimeout(() => (copyBtn.textContent = "Copy words"), 1500);
+      setTimeout(() => {
+        copyBtn.textContent = "Copy words";
+        if (hint.classList.contains("ok")) {
+          hint.textContent = "";
+          hint.classList.remove("ok");
+        }
+      }, 1600);
     });
   </script>
-  <footer class="site-footer">
-    <div class="bar">
-      <p>© <span id="yr"></span> Nepali Utilities</p>
-      <div class="footer-nav">
-        <nav id="footer-menu" aria-label="Footer tools"></nav>
-        <nav class="legal" aria-label="Legal">
-          <a href="/about/">About</a>
-          <a href="/privacy/">Privacy</a>
-        </nav>
-      </div>
-    </div>
-  </footer>
-
   <script src="/assets/menu.js" defer></script>
 </body>
 </html>
