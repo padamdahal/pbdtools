@@ -147,7 +147,7 @@
   // Get a free key at https://www.weatherapi.com/signup.aspx (1M calls/month,
   // free tier allows commercial/ad-supported sites). In their dashboard, under
   // API Keys, restrict the key to your domain so it can't be used elsewhere.
-  const WEATHER_API_KEY = "YOUR_WEATHERAPI_KEY";
+  const WEATHER_API_KEY = "a8804b19eb5946ad93780945262509";
 
   const CITIES = ["Kathmandu", "Pokhara", "Biratnagar", "Birgunj", "Janakpur", "Butwal", "Nepalgunj", "Dhangadhi"];
   const ICONS = {
