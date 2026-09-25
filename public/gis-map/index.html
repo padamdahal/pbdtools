@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GIS Map – Upload GeoJSON, Switch Basemaps, Export PNG/PDF</title>
+  <meta name="menu-title" content="GIS map">
+  <meta name="description" content="Interactive GIS map with free basemap layers. Upload GeoJSON, explore features, and export as PNG or PDF — all in your browser.">
+  <meta name="theme-color" content="#c3dcea">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🗺️%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700&display=swap">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <link rel="stylesheet" href="/assets/style.css">
+  <style>
+    .gis-layout {
+      display: grid;
+      grid-template-columns: minmax(260px, 320px) 1fr;
+      gap: var(--s-4);
+      align-items: stretch;
+      min-height: 560px;
+    }
+    @media (max-width: 800px) {
+      .gis-layout { grid-template-columns: 1fr; min-height: 0; }
+    }
+    .gis-side {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-4);
+    }
+    .gis-panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: var(--s-4);
+      box-shadow: var(--shadow-sm);
+    }
+    .gis-panel h2 {
+      margin: 0 0 var(--s-3);
+      font-size: 0.95rem;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 700;
+    }
+    .map-wrap {
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      background: #dbe4ea;
+      min-height: 520px;
+    }
+    #map { height: 100%; min-height: 520px; width: 100%; }
+    @media (max-width: 800px) {
+      .map-wrap, #map { min-height: 420px; }
+    }
+    .basemap-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .basemap-list label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: background .15s, border-color .15s;
+    }
+    .basemap-list label:hover { background: var(--bg); }
+    .basemap-list label:has(input:checked) {
+      background: color-mix(in srgb, var(--accent) 12%, var(--surface));
+      border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
+      font-weight: 600;
+    }
+    .basemap-list input { accent-color: var(--accent); }
+    .dropzone {
+      border: 2px dashed var(--line-strong);
+      border-radius: var(--radius);
+      padding: var(--s-5) var(--s-4);
+      text-align: center;
+      background: var(--bg);
+      transition: border-color .15s, background .15s;
+      cursor: pointer;
+    }
+    .dropzone.drag {
+      border-color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 10%, var(--bg));
+    }
+    .dropzone p { margin: 0 0 6px; font-size: 0.95rem; }
+    .dropzone .muted { margin: 0; font-size: 0.85rem; }
+    .layer-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+    .layer-item {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 8px;
+      align-items: center;
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--bg);
+      font-size: 0.92rem;
+    }
+    .layer-item .name { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .layer-item .meta { color: var(--muted); font-size: 0.8rem; }
+    .layer-item button {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 4px 6px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+    }
+    .layer-item button:hover { background: var(--surface); color: var(--ink); }
+    .swatch {
+      width: 14px; height: 14px; border-radius: 4px;
+      border: 1px solid rgba(0,0,0,.15);
+      flex-shrink: 0;
+    }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .toolbar .btn { flex: 1 1 auto; min-width: 0; }
+    .status {
+      font-size: 0.85rem;
+      color: var(--muted);
+      min-height: 1.2em;
+      margin: 0;
+    }
+    .status.error { color: #b42318; }
+    .legend-hint { font-size: 0.85rem; color: var(--muted); margin: 0; }
+    .leaflet-popup-content { margin: 10px 14px; font-family: inherit; font-size: 0.9rem; }
+    .leaflet-popup-content table { border-collapse: collapse; width: 100%; }
+    .leaflet-popup-content td { padding: 2px 6px 2px 0; vertical-align: top; }
+    .leaflet-popup-content td:first-child { color: var(--muted); white-space: nowrap; padding-right: 10px; }
+    .leaflet-container { font-family: inherit; }
+    .map-credit {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      z-index: 500;
+      pointer-events: none;
+      font-size: 10px;
+      color: #333;
+      background: rgba(255,255,255,.75);
+      padding: 2px 8px;
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#tool">Skip to tool</a>
+  <header class="site-header">
+    <div class="bar">
+      <a class="brand" href="/">Nepali Utilities</a>
+      <nav id="menu" aria-label="Tools"></nav>
+    </div>
+  </header>
+
+  <main class="narrow" id="tool" style="max-width: 1100px">
+    <div class="page-intro">
+      <h1>GIS map</h1>
+      <p class="lead">Load free basemap layers, upload your GeoJSON, explore features, and export the map as PNG or PDF. Everything runs in your browser — files stay on your device.</p>
+    </div>
+
+    <div class="gis-layout">
+      <aside class="gis-side">
+        <section class="gis-panel">
+          <h2>Basemap</h2>
+          <div class="basemap-list" id="basemap-list" role="radiogroup" aria-label="Basemap layer"></div>
+        </section>
+
+        <section class="gis-panel">
+          <h2>Your data</h2>
+          <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Upload GeoJSON file">
+            <p><strong>Drop GeoJSON here</strong></p>
+            <p class="muted">or click to choose a .geojson / .json file</p>
+            <input type="file" id="file" accept=".geojson,.json,application/geo+json,application/json" hidden>
+          </div>
+          <ul class="layer-list" id="layer-list" style="margin-top:12px"></ul>
+          <p class="status" id="status" aria-live="polite"></p>
+        </section>
+
+        <section class="gis-panel">
+          <h2>Export</h2>
+          <div class="toolbar">
+            <button type="button" class="btn btn-primary" id="btn-png">PNG</button>
+            <button type="button" class="btn" id="btn-pdf">PDF</button>
+            <button type="button" class="btn btn-ghost" id="btn-fit" title="Fit map to data">Fit data</button>
+            <button type="button" class="btn btn-ghost" id="btn-clear" title="Remove all uploaded layers">Clear</button>
+          </div>
+          <p class="legend-hint" style="margin-top:10px">PNG/PDF capture the current view. Wait a second after changing the basemap so tiles finish loading.</p>
+        </section>
+      </aside>
+
+      <div class="map-wrap">
+        <div id="map" role="application" aria-label="Interactive map"></div>
+        <div class="map-credit" id="map-credit"></div>
+      </div>
+    </div>
+
+    <p class="note" style="margin-top:20px">
+      Basemaps are free public tile services (OpenStreetMap and others). Uploaded GeoJSON is read only in your browser and is never sent to a server.
+      For best PNG/PDF results, use the OpenStreetMap or Carto layers (CORS-friendly). Satellite imagery may leave blank tiles in exports.
+    </p>
+  </main>
+
+  <footer class="site-footer">
+    <div class="bar">
+      <p>© <span id="yr"></span> Nepali Utilities</p>
+      <div class="footer-nav">
+        <nav id="footer-menu" aria-label="Footer tools"></nav>
+        <nav class="legal" aria-label="Legal">
+          <a href="/about/">About</a>
+          <a href="/privacy/">Privacy</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+  <script src="/assets/gis-map.js" defer></script>
+  <script src="/assets/menu.js" defer></script>
+</body>
+</html>
