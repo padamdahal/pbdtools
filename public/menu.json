@@ -1,22 +1,22 @@
 [
   {
     "title": "BS ↔ AD date converter",
-    "description": "Convert any date between Bikram Sambat (BS) and Gregorian (AD). Essential for forms, banks and official documents in Nepal.",
+    "description": "Free BS to AD and AD to BS date converter for Nepal. Convert Bikram Sambat to Gregorian (and back) for banks, forms and official documents.",
     "path": "/bs-ad-date-converter/"
   },
   {
     "title": "GIS map",
-    "description": "Interactive GIS map: free basemaps, upload GeoJSON and CSV, join by unique fields, and visualize values with a color gradient. Export PNG or PDF.",
+    "description": "Open a free GIS map in your browser: switch basemaps, upload GeoJSON, join CSV for choropleth colors, and export PNG or PDF. No install, no API key.",
     "path": "/gis-map/"
   },
   {
     "title": "Nepali typing",
-    "description": "Type Nepali in Roman English and get live Unicode Devanagari. Dictionary smart-words, phrase chips, draft auto-save — all offline in your browser.",
+    "description": "Type Nepali in Roman English and get live Unicode Devanagari. Free online Nepali keyboard alternative with smart dictionary, phrase chips and offline draft save.",
     "path": "/nepali-typing/"
   },
   {
     "title": "Number to Nepali words",
-    "description": "Type a number and get it written in Nepali words (अंकमा शब्द).",
+    "description": "Convert any number to Nepali words online (अंकमा शब्द). Supports लाख, करोड, अर्ब, खर्ब and Nepali digits. Free and instant.",
     "path": "/number-to-nepali-words/"
   }
 ]
