@@ -3,9 +3,28 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Nepali Typing – Roman to Unicode</title>
+  <title>Nepali Typing Online – Roman to Unicode Converter (Free)</title>
+  <meta name="description" content="Type Nepali in Roman English and get live Unicode Devanagari. Free online Nepali keyboard alternative with smart dictionary, phrase chips and offline draft save.">
+  <link rel="canonical" href="https://nepalitools.pbd.com.np/nepali-typing/">
+  <meta name="robots" content="index, follow">
+  <meta name="keywords" content="Nepali typing, Roman to Unicode, Nepali Unicode converter, type Nepali online, नेपाली टाइपिङ">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Nepali Utilities">
+  <meta property="og:title" content="Nepali Typing Online – Roman to Unicode Converter (Free)">
+  <meta property="og:description" content="Type Nepali in Roman English and get live Unicode Devanagari. Free online Nepali keyboard alternative with smart dictionary and offline draft save.">
+  <meta property="og:url" content="https://nepalitools.pbd.com.np/nepali-typing/">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="ne_NP">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Nepali Typing Online – Roman to Unicode Converter (Free)">
+  <meta name="twitter:description" content="Type Nepali in Roman English and get live Unicode Devanagari. Free, offline, in your browser.">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"Nepali Typing Online","url":"https://nepalitools.pbd.com.np/nepali-typing/","description":"Type Nepali in Roman English and get live Unicode Devanagari.","applicationCategory":"UtilityApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"NPR"},"inLanguage":["ne","en"]}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I type Nepali using an English keyboard?","acceptedAnswer":{"@type":"Answer","text":"Type phonetically in Roman letters. For example, namaste becomes नमस्ते and nepal becomes नेपाल. Double vowels for long sounds: aa → आ, ee → ई, oo → ऊ."}},{"@type":"Question","name":"Is this Nepali Unicode or Preeti font?","acceptedAnswer":{"@type":"Answer","text":"Output is standard Unicode Devanagari. You can paste it into Facebook, WhatsApp, Gmail, Word, and government forms without installing Preeti."}},{"@type":"Question","name":"Does my text leave the browser?","acceptedAnswer":{"@type":"Answer","text":"No. Conversion runs entirely on your device. Drafts are saved only in your browser local storage."}},{"@type":"Question","name":"How do I type half letters (halant)?","acceptedAnswer":{"@type":"Answer","text":"Type a consonant without a following vowel. Example: k → क् and ka → क. Conjuncts like ksha, tra, gya and shra are also supported."}}]}
+  </script>
   <meta name="menu-title" content="Nepali typing">
-  <meta name="description" content="Type Nepali in Roman English and get live Unicode Devanagari. Dictionary smart-words, phrase chips, draft auto-save — all offline in your browser.">
   <meta name="theme-color" content="#c3dcea">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E✍️%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,206 +32,67 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700&display=swap">
   <link rel="stylesheet" href="/assets/style.css">
   <style>
-    .type-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--s-4);
-    }
-    @media (max-width: 720px) {
-      .type-grid { grid-template-columns: 1fr; }
-    }
-    .type-panel {
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: var(--s-4);
-      box-shadow: var(--shadow-sm);
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      min-height: 280px;
-    }
-    .type-panel label {
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.02em;
-    }
-    .type-panel textarea {
-      flex: 1;
-      min-height: 200px;
-      width: 100%;
-      resize: vertical;
-      font-size: 1.15rem;
-      line-height: 1.55;
-      padding: 12px 14px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius-sm);
-      background: var(--bg);
-      color: var(--ink);
-      font-family: inherit;
-    }
-    .type-panel textarea:focus {
-      outline: 2px solid color-mix(in srgb, var(--accent) 45%, transparent);
-      outline-offset: 1px;
-      border-color: color-mix(in srgb, var(--accent) 40%, var(--line));
-    }
-    #nepali {
-      font-size: 1.35rem;
-      line-height: 1.7;
-    }
-    .toolbar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
-      margin-top: var(--s-3);
-    }
-    .toolbar .btn { flex: 0 0 auto; }
-    .meta-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px 18px;
-      align-items: center;
-      font-size: 0.9rem;
-      color: var(--muted);
-      margin-top: 8px;
-    }
-    .meta-row label {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
-      font-weight: 600;
-      color: var(--ink);
-      text-transform: none;
-      letter-spacing: 0;
-      font-size: 0.9rem;
-    }
-    .chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-    .chip {
-      border: 1px solid var(--line);
-      background: var(--surface);
-      color: var(--ink);
-      border-radius: var(--radius-pill);
-      padding: 6px 12px;
-      font-size: 0.9rem;
-      cursor: pointer;
-      font-family: inherit;
-      transition: background .15s, border-color .15s;
-    }
-    .chip:hover {
-      background: var(--bg);
-      border-color: var(--line-strong);
-    }
-    .chip.primary {
-      border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
-      background: color-mix(in srgb, var(--accent) 8%, var(--surface));
-    }
-    .section-title {
-      margin: var(--s-5) 0 var(--s-2);
-      font-size: 1rem;
-      font-weight: 700;
-    }
-    details.cheat {
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: var(--s-3) var(--s-4);
-      margin-top: var(--s-4);
-    }
-    details.cheat summary {
-      cursor: pointer;
-      font-weight: 700;
-      list-style: none;
-    }
-    details.cheat summary::-webkit-details-marker { display: none; }
-    .cheat-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap: 8px 12px;
-      margin-top: 12px;
-      font-size: 0.92rem;
-    }
-    .cheat-grid span {
-      display: flex;
-      justify-content: space-between;
-      gap: 8px;
-      padding: 4px 0;
-      border-bottom: 1px dashed var(--line);
-    }
-    .cheat-grid code {
-      font-family: ui-monospace, monospace;
-      color: var(--muted);
-      font-size: 0.85rem;
-    }
-    #status { min-height: 1.2em; color: var(--success); font-size: 0.9rem; }
+    .type-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--s-4)}
+    @media(max-width:720px){.type-grid{grid-template-columns:1fr}}
+    .type-panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:var(--s-4);box-shadow:var(--shadow-sm);display:flex;flex-direction:column;gap:10px;min-height:280px}
+    .type-panel label{font-size:.85rem;font-weight:700;color:var(--muted);text-transform:uppercase}
+    .type-panel textarea{flex:1;min-height:200px;width:100%;resize:vertical;font-size:1.15rem;line-height:1.55;padding:12px 14px;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--bg);color:var(--ink);font-family:inherit}
+    #nepali{font-size:1.35rem;line-height:1.7}
+    .toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-top:var(--s-3)}
+    .meta-row{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center;font-size:.9rem;color:var(--muted);margin-top:8px}
+    .chips{display:flex;flex-wrap:wrap;gap:8px}
+    .chip{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:var(--radius-pill);padding:6px 12px;font-size:.9rem;cursor:pointer;font-family:inherit}
+    .chip.primary{border-color:color-mix(in srgb,var(--accent) 35%,var(--line));background:color-mix(in srgb,var(--accent) 8%,var(--surface))}
+    .section-title{margin:var(--s-5) 0 var(--s-2);font-size:1rem;font-weight:700}
+    details.cheat{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:var(--s-3) var(--s-4);margin-top:var(--s-4)}
+    details.cheat summary{cursor:pointer;font-weight:700;list-style:none}
+    .cheat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px 12px;margin-top:12px;font-size:.92rem}
+    .faq{margin-top:var(--s-5)}.faq h2{font-size:1.15rem;margin-bottom:var(--s-3)}
+    .faq-item{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);padding:10px 14px;margin-bottom:8px}
+    .faq-item summary{cursor:pointer;font-weight:600;list-style:none}
+    .faq-item p{margin:8px 0 4px;color:var(--muted);font-size:.95rem}
+    .related-tools{margin-top:var(--s-4);font-size:.95rem}.related-tools a{margin-right:12px}
+    #status{min-height:1.2em;color:var(--success);font-size:.9rem}
   </style>
 </head>
 <body>
   <a class="skip" href="#tool">Skip to tool</a>
-  <header class="site-header">
-    <div class="bar">
-      <a class="brand" href="/">Nepali Utilities</a>
-      <nav id="menu" aria-label="Tools"></nav>
-    </div>
-  </header>
-
-  <main class="narrow" id="tool" style="max-width: 960px">
+  <header class="site-header"><div class="bar"><a class="brand" href="/">Nepali Utilities</a><nav id="menu" aria-label="Tools"></nav></div></header>
+  <main class="narrow" id="tool" style="max-width:960px">
     <div class="page-intro">
       <h1>Nepali typing</h1>
       <p class="lead">Type in Roman English — get live Unicode Nepali. Smart dictionary for everyday words, one-tap phrases, and draft auto-save. Everything stays in your browser.</p>
     </div>
-
     <div class="type-grid">
-      <div class="type-panel">
-        <label for="roman">Roman (English letters)</label>
-        <textarea id="roman" spellcheck="false" autocomplete="off" placeholder="namaste, kasto chha? mero desh nepal…" autofocus></textarea>
-      </div>
-      <div class="type-panel">
-        <label for="nepali">Nepali Unicode</label>
-        <textarea id="nepali" readonly spellcheck="false" placeholder="नमस्ते…"></textarea>
-      </div>
+      <div class="type-panel"><label for="roman">Roman (English letters)</label><textarea id="roman" spellcheck="false" autocomplete="off" placeholder="namaste, kasto chha? mero desh nepal…" autofocus></textarea></div>
+      <div class="type-panel"><label for="nepali">Nepali Unicode</label><textarea id="nepali" readonly spellcheck="false" placeholder="नमस्ते…"></textarea></div>
     </div>
-
     <div class="toolbar">
       <button type="button" class="btn btn-primary" id="btn-copy">Copy Nepali</button>
       <button type="button" class="btn" id="btn-download">Download .txt</button>
       <button type="button" class="btn btn-ghost" id="btn-clear">Clear</button>
-      <button type="button" class="btn btn-ghost" id="btn-swap" title="Focus roman input">Focus input</button>
+      <button type="button" class="btn btn-ghost" id="btn-swap">Focus input</button>
     </div>
-
     <div class="meta-row">
       <span id="count">0 words · 0 characters</span>
       <label><input type="checkbox" id="nepali-digits"> Nepali digits (०–९)</label>
       <span id="status" aria-live="polite"></span>
     </div>
-
     <h2 class="section-title">Quick phrases</h2>
-    <div class="chips" aria-label="Insert common roman phrases">
+    <div class="chips">
       <button type="button" class="chip primary" data-example="namaste">namaste</button>
       <button type="button" class="chip primary" data-example="dhanyabad">dhanyabad</button>
       <button type="button" class="chip primary" data-example="tapailai kasto chha">tapailai kasto chha</button>
       <button type="button" class="chip" data-example="mero desh nepal">mero desh nepal</button>
       <button type="button" class="chip" data-example="shubhakamana">shubhakamana</button>
       <button type="button" class="chip" data-example="kathmandu">kathmandu</button>
-      <button type="button" class="chip" data-example="aaja bholi">aaja bholi</button>
-      <button type="button" class="chip" data-example="hajur thik chha">hajur thik chha</button>
     </div>
-
     <h2 class="section-title">Insert Nepali directly</h2>
-    <div class="chips" aria-label="Insert Nepali phrases">
+    <div class="chips">
       <button type="button" class="chip" data-phrase="नमस्ते">नमस्ते</button>
       <button type="button" class="chip" data-phrase="धन्यवाद">धन्यवाद</button>
       <button type="button" class="chip" data-phrase="कृपया">कृपया</button>
-      <button type="button" class="chip" data-phrase="माफ गर्नुहोस्">माफ गर्नुहोस्</button>
       <button type="button" class="chip" data-phrase="शुभकामना">शुभकामना</button>
-      <button type="button" class="chip" data-phrase="बधाई छ">बधाई छ</button>
       <button type="button" class="chip" data-phrase="क्ष">क्ष</button>
       <button type="button" class="chip" data-phrase="त्र">त्र</button>
       <button type="button" class="chip" data-phrase="ज्ञ">ज्ञ</button>
@@ -220,73 +100,21 @@
       <button type="button" class="chip" data-phrase="ॐ">ॐ</button>
       <button type="button" class="chip" data-phrase="।">।</button>
     </div>
-
     <details class="cheat">
       <summary>Typing guide (vowels, consonants, conjuncts)</summary>
-      <div class="cheat-grid">
-        <span><code>a</code> अ</span>
-        <span><code>aa</code> आ</span>
-        <span><code>i</code> इ</span>
-        <span><code>ee / ii</code> ई</span>
-        <span><code>u</code> उ</span>
-        <span><code>oo / uu</code> ऊ</span>
-        <span><code>e</code> ए</span>
-        <span><code>ai</code> ऐ</span>
-        <span><code>o</code> ओ</span>
-        <span><code>au</code> औ</span>
-        <span><code>ri</code> ऋ</span>
-        <span><code>am</code> अं</span>
-        <span><code>ka</code> क</span>
-        <span><code>kha</code> ख</span>
-        <span><code>ga</code> ग</span>
-        <span><code>gha</code> घ</span>
-        <span><code>cha</code> च</span>
-        <span><code>chha</code> छ</span>
-        <span><code>ja</code> ज</span>
-        <span><code>Ta</code> ट</span>
-        <span><code>ta</code> त</span>
-        <span><code>tha</code> थ</span>
-        <span><code>da</code> द</span>
-        <span><code>dha</code> ध</span>
-        <span><code>na</code> न</span>
-        <span><code>pa</code> प</span>
-        <span><code>pha / fa</code> फ</span>
-        <span><code>ba</code> ब</span>
-        <span><code>bha</code> भ</span>
-        <span><code>ma</code> म</span>
-        <span><code>ya ra la va</code> य र ल व</span>
-        <span><code>sha</code> श</span>
-        <span><code>sa</code> स</span>
-        <span><code>ha</code> ह</span>
-        <span><code>ksha / x</code> क्ष</span>
-        <span><code>tra</code> त्र</span>
-        <span><code>gya / jna</code> ज्ञ</span>
-        <span><code>shra</code> श्र</span>
-      </div>
-      <p class="note" style="margin-top:12px;margin-bottom:0">
-        Tip: type consonants without a vowel for a half letter (halant). Example: <code>k</code> → क्, <code>ka</code> → क.
-        Common words like <code>namaste</code>, <code>kathmandu</code>, <code>dhanyabad</code> use a built-in dictionary for better spelling.
-      </p>
+      <p class="note" style="margin-top:12px">a अ · aa आ · i इ · ee ई · u उ · oo ऊ · ka क · kha ख · chha छ · ksha/x क्ष · tra त्र · gya ज्ञ. Half letter: consonant alone (k → क्).</p>
     </details>
-
-    <p class="note" style="margin-top:20px">
-      Unique to this tool: live dual-pane preview, 100+ smart dictionary words, phrase packs, conjunct chips, Nepali digit toggle, and automatic draft save — all offline, no API key.
-    </p>
+    <section class="faq" aria-label="Frequently asked questions">
+      <h2>Frequently asked questions</h2>
+      <details class="faq-item"><summary>How do I type Nepali using an English keyboard?</summary><p>Type phonetically in Roman letters. For example, namaste becomes नमस्ते. Double vowels for long sounds: aa → आ, ee → ई, oo → ऊ.</p></details>
+      <details class="faq-item"><summary>Is this Nepali Unicode or Preeti font?</summary><p>Output is standard Unicode Devanagari. Paste into Facebook, WhatsApp, Gmail, Word, and government forms without installing Preeti.</p></details>
+      <details class="faq-item"><summary>Does my text leave the browser?</summary><p>No. Conversion runs on your device. Drafts stay in local storage only.</p></details>
+      <details class="faq-item"><summary>How do I type half letters (halant)?</summary><p>Type a consonant without a following vowel. Example: k → क् and ka → क.</p></details>
+    </section>
+    <p class="related-tools"><strong>Related:</strong> <a href="/bs-ad-date-converter/">BS ↔ AD date converter</a> <a href="/number-to-nepali-words/">Number to Nepali words</a> <a href="/">All tools</a></p>
+    <p class="note">Live dual-pane preview, smart dictionary, phrase packs, and draft auto-save — all offline.</p>
   </main>
-
-  <footer class="site-footer">
-    <div class="bar">
-      <p>© <span id="yr"></span> Nepali Utilities</p>
-      <div class="footer-nav">
-        <nav id="footer-menu" aria-label="Footer tools"></nav>
-        <nav class="legal" aria-label="Legal">
-          <a href="/about/">About</a>
-          <a href="/privacy/">Privacy</a>
-        </nav>
-      </div>
-    </div>
-  </footer>
-
+  <footer class="site-footer"><div class="bar"><p>© <span id="yr"></span> Nepali Utilities</p><div class="footer-nav"><nav id="footer-menu" aria-label="Footer tools"></nav><nav class="legal" aria-label="Legal"><a href="/about/">About</a><a href="/privacy/">Privacy</a></nav></div></div></footer>
   <script src="/assets/nepali-typing.js" defer></script>
   <script src="/assets/menu.js" defer></script>
 </body>
