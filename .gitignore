@@ -1,3 +1,5 @@
 node_modules
 .wrangler
 public/menu.json
+public/sitemap.xml
+public/robots.txt
