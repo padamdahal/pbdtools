@@ -5,6 +5,7 @@
 (async () => {
   // Used only if /menu.json cannot be loaded. Add new tools here too if you want a safety net.
   const FALLBACK = [
+    { title: "BS ↔ AD date converter", description: "Convert dates between Bikram Sambat and Gregorian.", path: "/bs-ad-date-converter/" },
     { title: "Number to Nepali words", description: "Write any number in Nepali words.", path: "/number-to-nepali-words/" },
   ];
 
