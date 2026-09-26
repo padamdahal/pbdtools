@@ -1,8 +1,10 @@
 /* ============================================================
-   Nepali Utilities — shared design system (part A)
+   Nepali Utilities — shared design system
+   All pages and tools should use these tokens and classes.
    ============================================================ */
 
 :root {
+  /* Color */
   --bg: #f2f5f9;
   --surface: #ffffff;
   --surface-2: #f7f9fc;
@@ -17,13 +19,19 @@
   --sky: #c3dcea;
   --ridge-far: #aac6d8;
   --ridge-mid: #89abc1;
+
+  /* Shape */
   --radius: 14px;
   --radius-sm: 10px;
   --radius-xs: 8px;
   --radius-pill: 999px;
+
+  /* Type */
   --font: "Mukta", "Noto Sans Devanagari", "Nirmala UI", "Mangal", system-ui, -apple-system, "Segoe UI", sans-serif;
   --fs: 1.05rem;
   --lh: 1.6;
+
+  /* Space scale */
   --s-1: 4px;
   --s-2: 8px;
   --s-3: 12px;
@@ -32,9 +40,13 @@
   --s-6: 24px;
   --s-7: 32px;
   --s-8: 48px;
+
+  /* Elevation */
   --shadow-sm: 0 1px 2px color-mix(in srgb, var(--ink) 6%, transparent);
   --shadow: 0 4px 16px color-mix(in srgb, var(--ink) 7%, transparent);
   --shadow-lg: 0 12px 32px color-mix(in srgb, var(--ink) 10%, transparent);
+
+  /* Layout */
   --max: 1080px;
   --narrow: 720px;
   --header-h: 56px;
@@ -62,6 +74,7 @@
   }
 }
 
+/* ---------- reset & base ---------- */
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) {
@@ -92,12 +105,21 @@ a { color: inherit; }
 }
 .skip:focus { left: 8px; }
 
+/* ---------- header ---------- */
+/* High z-index + solid-ish background so Leaflet map panes never paint over the sticky nav */
 .site-header {
-  /* Above Leaflet panes (400–700) so map never covers menu while scrolling */
-  position: sticky; top: 0; z-index: 2000;
-  background: color-mix(in srgb, var(--surface) 94%, transparent);
-  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  position: sticky; top: 0; z-index: 10000;
+  background: color-mix(in srgb, var(--surface) 96%, transparent);
+  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--line);
+}
+
+/* Shared map container: create a low stacking context so Leaflet z-index stays under header */
+.map-wrap {
+  position: relative;
+  z-index: 0;
+  isolation: isolate;
+  overflow: hidden;
 }
 .bar {
   max-width: var(--max);
@@ -141,6 +163,7 @@ a { color: inherit; }
   font-weight: 600;
 }
 
+/* ---------- main layout ---------- */
 main {
   flex: 1;
   max-width: var(--max);
@@ -148,9 +171,12 @@ main {
   padding: var(--s-7) 20px var(--s-8);
   width: 100%;
 }
-main.narrow { max-width: var(--narrow); }
+main.narrow {
+  max-width: var(--narrow);
+}
 main.narrow > * { max-width: none; }
 
+/* Page intro (tool + content pages) */
 .page-intro { margin-bottom: var(--s-6); }
 .page-intro h1 {
   font-size: clamp(1.65rem, 4.5vw, 2.2rem);
@@ -179,27 +205,83 @@ h2 {
 h2:first-child { margin-top: 0; }
 h3 { font-size: 1.1rem; margin: var(--s-5) 0 var(--s-2); }
 
+/* ---------- footer ---------- */
 .site-footer {
   border-top: 1px solid var(--line);
-  background: var(--surface);
   margin-top: auto;
+  color: var(--muted);
+  font-size: 0.92rem;
+  background: var(--surface);
 }
 .site-footer .bar {
-  padding-top: 16px;
-  padding-bottom: 16px;
-  font-size: 0.9rem;
-  color: var(--muted);
+  justify-content: space-between;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  min-height: auto;
 }
+.site-footer p { margin: 0; }
 .footer-nav {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 20px;
+  gap: 8px 24px;
   align-items: center;
-  margin-left: auto;
 }
-.footer-nav .legal a {
+#footer-menu, .legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 4px;
+}
+.legal a {
   color: var(--muted);
   text-decoration: none;
-  margin-left: 12px;
+  padding: 6px 10px;
+  border-radius: var(--radius-xs);
 }
-.footer-nav .legal a:hover { color: var(--ink); }
+.legal a:hover { color: var(--ink); background: var(--surface-2); }
+
+/* ---------- tool cards (home + lists) ---------- */
+.tool-list { border-top: 1px solid var(--line); }
+.tool-list a {
+  display: block;
+  padding: 16px 4px;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.tool-list a:hover { background: var(--surface); }
+.tool-list strong { display: block; font-size: 1.08rem; }
+.tool-list span { color: var(--muted); font-size: 0.95rem; }
+
+/* Card grid variant used on home */
+.tool-list.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+  border: 0;
+}
+.tool-list.cards a {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--line);
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+}
+.tool-list.cards a:hover {
+  border-color: var(--line-strong);
+  box-shadow: var(--shadow);
+  transform: translateY(-1px);
+  background: var(--surface);
+}
+.tool-list.cards a:active { transform: translateY(0); }
+.tool-list.cards strong {
+  display: block;
+  font-size: 1.08rem;
+  margin-bottom: 4px;
+}
+.tool-list.cards span {
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
