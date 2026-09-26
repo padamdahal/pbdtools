@@ -18,5 +18,10 @@
     "title": "Number to Nepali words",
     "description": "Convert any number to Nepali words online (अंकमा शब्द). Supports लाख, करोड, अर्ब, खर्ब and Nepali digits. Free and instant.",
     "path": "/number-to-nepali-words/"
+  },
+  {
+    "title": "Rasuwa flood map",
+    "description": "Interactive map of the 26 August 2026 Rasuwa–Bhotekoshi flash flood: open HOT damage GeoJSON layers (flood extent, buildings, bridges, hydropower), show/hide layers, and latest news. Free, no install.",
+    "path": "/rasuwa-flood-map/"
   }
 ]
