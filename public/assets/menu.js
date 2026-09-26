@@ -3,11 +3,12 @@
 //   #tool-list    tool cards on the home page (skips links already in the HTML)
 //   #yr           current year in the footer
 (async () => {
-  // Used only if /menu.json cannot be loaded. Add new tools here too if you want a safety net.
   const FALLBACK = [
     { title: "BS ↔ AD date converter", description: "Convert dates between Bikram Sambat and Gregorian.", path: "/bs-ad-date-converter/" },
     { title: "GIS map", description: "Upload GeoJSON, switch basemaps, export PNG or PDF.", path: "/gis-map/" },
+    { title: "Nepali typing", description: "Type Roman English and get live Unicode Nepali.", path: "/nepali-typing/" },
     { title: "Number to Nepali words", description: "Write any number in Nepali words.", path: "/number-to-nepali-words/" },
+    { title: "Rasuwa flood map", description: "Interactive 2026 Bhotekoshi damage layers and news.", path: "/rasuwa-flood-map/" },
   ];
 
   let items;
