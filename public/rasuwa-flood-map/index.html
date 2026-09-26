@@ -7,122 +7,75 @@
   <meta name="description" content="Interactive map of the 26 August 2026 Rasuwa–Bhotekoshi flash flood: open HOT damage GeoJSON layers (flood extent, buildings, bridges, hydropower), show/hide layers, and latest news. Free, no install.">
   <link rel="canonical" href="https://nepalitools.pbd.com.np/rasuwa-flood-map/">
   <meta name="robots" content="index, follow">
-  <meta name="keywords" content="Rasuwa flood map, Bhotekoshi flood 2026, Nepal flood damage map, Rasuwagadhi flood GeoJSON, Trishuli flood interactive map">
+  <meta name="keywords" content="Rasuwa flood map, Bhotekoshi flood 2026, Nepal flood damage map">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Nepali Utilities">
   <meta property="og:title" content="Rasuwa Flood Map 2026 – Bhotekoshi Damage Layers &amp; Live News">
-  <meta property="og:description" content="Explore open damage layers for the August 2026 Rasuwa–Bhotekoshi flood: flood extent, buildings, bridges and hydropower, plus latest news.">
+  <meta property="og:description" content="Explore open damage layers for the August 2026 Rasuwa–Bhotekoshi flood plus latest news.">
   <meta property="og:url" content="https://nepalitools.pbd.com.np/rasuwa-flood-map/">
   <meta property="og:image" content="https://nepalitools.pbd.com.np/assets/og-default.svg">
-  <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Rasuwa Flood Map 2026 – Bhotekoshi Damage Layers &amp; Live News">
-  <meta name="twitter:description" content="Explore open damage layers for the August 2026 Rasuwa–Bhotekoshi flood: flood extent, buildings, bridges and hydropower, plus latest news.">
-  <meta name="twitter:image" content="https://nepalitools.pbd.com.np/assets/og-default.svg">
-  <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"WebApplication","name":"Rasuwa Flood Map 2026","url":"https://nepalitools.pbd.com.np/rasuwa-flood-map/","description":"Interactive map of the 26 August 2026 Rasuwa–Bhotekoshi flash flood with open HOT damage GeoJSON layers and latest news.","applicationCategory":"UtilityApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"NPR"},"inLanguage":["en","ne"]}
-  </script>
-  <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the Rasuwa flood map?","acceptedAnswer":{"@type":"Answer","text":"An interactive browser map of the 26 August 2026 Bhotekoshi–Trishuli flash flood in Rasuwa and downstream districts. It loads open HOT damage layers from HDX."}},{"@type":"Question","name":"Where does the damage data come from?","acceptedAnswer":{"@type":"Answer","text":"Open GeoJSON published on HDX by HOT: observed flood extent, AI and manually validated building damage, destroyed features, bridge damage assessment, and exposed hydropower sites."}},{"@type":"Question","name":"Can I hide or show individual layers?","acceptedAnswer":{"@type":"Answer","text":"Yes. Use the checkboxes in the left panel. Heavy layers load only when you turn them on."}},{"@type":"Question","name":"Is the news updated automatically?","acceptedAnswer":{"@type":"Answer","text":"The bottom news panel fetches recent public headlines about the Rasuwa / Bhotekoshi flood. If the feed is unavailable, curated reference links are shown."}}]}
-  </script>
+  <meta name="twitter:title" content="Rasuwa Flood Map 2026">
+  <meta name="twitter:description" content="Interactive Bhotekoshi flood damage map with open HOT layers and news.">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Rasuwa Flood Map 2026","url":"https://nepalitools.pbd.com.np/rasuwa-flood-map/","description":"Interactive map of the 26 August 2026 Rasuwa–Bhotekoshi flash flood with open HOT damage layers and latest news.","applicationCategory":"UtilityApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"NPR"}}</script>
   <meta name="menu-title" content="Rasuwa flood map">
   <meta name="theme-color" content="#c3dcea">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌊%3C/text%3E%3C/svg%3E">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;600;700&display=swap">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
   <link rel="stylesheet" href="/assets/style.css">
   <style>
-    .faq { margin-top: var(--s-5); }
-    .faq h2 { font-size: 1.15rem; margin-bottom: var(--s-3); }
-    .faq-item { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 8px; }
-    .faq-item summary { cursor: pointer; font-weight: 600; list-style: none; }
-    .faq-item summary::-webkit-details-marker { display: none; }
-    .faq-item p { margin: 8px 0 4px; color: var(--muted); font-size: 0.95rem; }
-    .related-tools { margin-top: var(--s-4); font-size: 0.95rem; }
-    .related-tools a { margin-right: 12px; }
-    .flood-layout { display: grid; grid-template-columns: minmax(260px, 300px) 1fr; gap: var(--s-4); align-items: stretch; min-height: 520px; }
-    @media (max-width: 860px) { .flood-layout { grid-template-columns: 1fr; min-height: 0; } }
-    .flood-side { display: flex; flex-direction: column; gap: var(--s-3); max-height: calc(100vh - 120px); overflow: auto; }
-    @media (max-width: 860px) { .flood-side { max-height: none; } }
-    .gis-panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: var(--s-4); box-shadow: var(--shadow-sm); }
-    .gis-panel h2 { margin: 0 0 var(--s-3); font-size: 0.95rem; text-transform: uppercase; color: var(--muted); font-weight: 700; }
-    .map-wrap { position: relative; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); background: #dbe4ea; min-height: 520px; }
-    #map { height: 100%; min-height: 520px; width: 100%; }
-    @media (max-width: 860px) { .map-wrap, #map { min-height: 400px; } }
-    .basemap-list { display: flex; flex-direction: column; gap: 4px; }
-    .basemap-list label { display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: 10px; border: 1px solid transparent; cursor: pointer; font-size: 0.92rem; }
-    .basemap-list label:hover { background: var(--bg); }
-    .basemap-list label:has(input:checked) { background: color-mix(in srgb, var(--accent) 12%, var(--surface)); border-color: color-mix(in srgb, var(--accent) 35%, var(--line)); font-weight: 600; }
-    .basemap-list input { accent-color: var(--accent); }
-    .layer-check { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
-    .layer-check li { display: grid; grid-template-columns: auto 1fr; gap: 8px; align-items: start; padding: 8px 10px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); font-size: 0.9rem; }
-    .layer-check li:has(input:checked) { border-color: color-mix(in srgb, var(--accent) 30%, var(--line)); background: color-mix(in srgb, var(--accent) 6%, var(--bg)); }
-    .layer-check label { cursor: pointer; display: flex; flex-direction: column; gap: 2px; }
-    .layer-check .lname { font-weight: 600; line-height: 1.3; }
-    .layer-check .lmeta { color: var(--muted); font-size: 0.78rem; line-height: 1.35; }
-    .layer-check input { margin-top: 3px; accent-color: var(--accent); }
-    .swatch { width: 12px; height: 12px; border-radius: 3px; border: 1px solid rgba(0,0,0,.2); display: inline-block; vertical-align: middle; margin-right: 4px; }
-    .status { font-size: 0.85rem; color: var(--muted); min-height: 1.2em; margin: 8px 0 0; }
-    .status.error { color: #b42318; }
-    .status.loading { color: var(--ink); }
-    .toolbar { display: flex; flex-wrap: wrap; gap: 8px; }
-    .toolbar .btn { flex: 1 1 auto; min-width: 0; }
-    .map-credit { position: absolute; bottom: 0; left: 0; right: 0; z-index: 500; pointer-events: none; font-size: 10px; color: #333; background: rgba(255,255,255,.75); padding: 2px 8px; text-align: right; }
-    .leaflet-popup-content { margin: 10px 14px; font-family: inherit; font-size: 0.88rem; }
-    .leaflet-popup-content table { border-collapse: collapse; width: 100%; }
-    .leaflet-popup-content td { padding: 2px 6px 2px 0; vertical-align: top; }
-    .leaflet-popup-content td:first-child { color: var(--muted); white-space: nowrap; padding-right: 10px; }
-    .leaflet-container { font-family: inherit; }
-    .news-panel { margin-top: var(--s-4); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-sm); overflow: hidden; }
-    .news-panel .news-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 14px; border-bottom: 1px solid var(--line); background: var(--surface-2); }
-    .news-panel .news-head h2 { margin: 0; font-size: 0.95rem; text-transform: uppercase; color: var(--muted); font-weight: 700; }
-    .news-panel .news-head .meta { font-size: 0.8rem; color: var(--muted); }
-    .news-rail { display: flex; gap: 12px; padding: 12px 14px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
-    .news-card { flex: 0 0 min(280px, 78vw); scroll-snap-align: start; border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 12px 14px; background: var(--bg); text-decoration: none; color: inherit; }
-    .news-card:hover { border-color: color-mix(in srgb, var(--accent) 40%, var(--line)); box-shadow: var(--shadow-sm); }
-    .news-card .ndate { font-size: 0.75rem; color: var(--muted); margin-bottom: 4px; }
-    .news-card .ntitle { font-weight: 600; font-size: 0.92rem; line-height: 1.35; margin: 0 0 6px; }
-    .news-card .nsrc { font-size: 0.78rem; color: var(--muted); }
-    .news-empty { padding: 14px; color: var(--muted); font-size: 0.9rem; }
-    .key-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin: 0 0 var(--s-3); }
-    .key-facts .fact { background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; text-align: center; }
-    .key-facts .fact strong { display: block; font-size: 1.05rem; color: var(--accent); line-height: 1.2; }
-    .key-facts .fact span { font-size: 0.75rem; color: var(--muted); }
+    .flood-layout{display:grid;grid-template-columns:minmax(260px,300px) 1fr;gap:var(--s-4);min-height:520px}
+    @media(max-width:860px){.flood-layout{grid-template-columns:1fr}}
+    .flood-side{display:flex;flex-direction:column;gap:var(--s-3);max-height:calc(100vh - 120px);overflow:auto}
+    .gis-panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:var(--s-4);box-shadow:var(--shadow-sm)}
+    .gis-panel h2{margin:0 0 var(--s-3);font-size:.95rem;text-transform:uppercase;color:var(--muted);font-weight:700}
+    .map-wrap{position:relative;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#dbe4ea;min-height:520px}
+    #map{height:100%;min-height:520px;width:100%}
+    .basemap-list{display:flex;flex-direction:column;gap:4px}
+    .basemap-list label{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:10px;border:1px solid transparent;cursor:pointer;font-size:.92rem}
+    .basemap-list label:has(input:checked){background:color-mix(in srgb,var(--accent) 12%,var(--surface));border-color:color-mix(in srgb,var(--accent) 35%,var(--line));font-weight:600}
+    .layer-check{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+    .layer-check li{display:grid;grid-template-columns:auto 1fr;gap:8px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);font-size:.9rem}
+    .layer-check .lname{font-weight:600}.layer-check .lmeta{color:var(--muted);font-size:.78rem}
+    .swatch{width:12px;height:12px;border-radius:3px;border:1px solid rgba(0,0,0,.2);display:inline-block;margin-right:4px}
+    .status{font-size:.85rem;color:var(--muted);min-height:1.2em;margin:8px 0 0}.status.error{color:#b42318}
+    .toolbar{display:flex;flex-wrap:wrap;gap:8px}.toolbar .btn{flex:1 1 auto}
+    .map-credit{position:absolute;bottom:0;left:0;right:0;z-index:500;font-size:10px;background:rgba(255,255,255,.75);padding:2px 8px;text-align:right}
+    .news-panel{margin-top:var(--s-4);background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+    .news-head{display:flex;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--surface-2)}
+    .news-head h2{margin:0;font-size:.95rem;text-transform:uppercase;color:var(--muted)}
+    .news-rail{display:flex;gap:12px;padding:12px 14px;overflow-x:auto}
+    .news-card{flex:0 0 min(280px,78vw);border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px 14px;background:var(--bg);text-decoration:none;color:inherit}
+    .news-card .ndate{font-size:.75rem;color:var(--muted)}.news-card .ntitle{font-weight:600;font-size:.92rem;margin:0 0 6px}.news-card .nsrc{font-size:.78rem;color:var(--muted)}
+    .key-facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin:0 0 var(--s-3)}
+    .key-facts .fact{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px;text-align:center}
+    .key-facts .fact strong{display:block;color:var(--accent)}.key-facts .fact span{font-size:.75rem;color:var(--muted)}
+    .faq{margin-top:var(--s-5)}.faq-item{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);padding:10px 14px;margin-bottom:8px}
   </style>
 </head>
 <body>
   <a class="skip" href="#tool">Skip to tool</a>
-  <header class="site-header">
-    <div class="bar">
-      <a class="brand" href="/">Nepali Utilities</a>
-      <nav id="menu" aria-label="Tools"></nav>
-    </div>
-  </header>
-  <main class="narrow" id="tool" style="max-width: 1140px">
+  <header class="site-header"><div class="bar"><a class="brand" href="/">Nepali Utilities</a><nav id="menu" aria-label="Tools"></nav></div></header>
+  <main class="narrow" id="tool" style="max-width:1140px">
     <div class="page-intro">
       <h1>Rasuwa flood map 2026</h1>
-      <p class="lead">Interactive map of the 26&nbsp;August&nbsp;2026 Bhotekoshi–Trishuli flash flood. Toggle open HOT damage layers (flood extent, buildings, bridges, hydropower) and follow latest public headlines — all in the browser.</p>
+      <p class="lead">Interactive map of the 26 August 2026 Bhotekoshi–Trishuli flash flood. Toggle open HOT damage layers and latest headlines.</p>
     </div>
     <div class="flood-layout">
       <aside class="flood-side">
         <section class="gis-panel">
           <h2>Context</h2>
-          <div class="key-facts" aria-label="Key figures (indicative)">
+          <div class="key-facts">
             <div class="fact"><strong>26 Aug</strong><span>Event date</span></div>
             <div class="fact"><strong>Rasuwa+</strong><span>Core districts</span></div>
             <div class="fact"><strong>HOT/HDX</strong><span>Open layers</span></div>
           </div>
-          <p style="margin:0;font-size:0.85rem;color:var(--muted);line-height:1.4">Ice–rock avalanche upstream of Rasuwagadhi drove a debris-laden flood down the Bhotekoshi into the Trishuli. Layers are public HOT exports on HDX; figures evolve with official sitreps.</p>
+          <p style="margin:0;font-size:.85rem;color:var(--muted)">Ice–rock avalanche upstream of Rasuwagadhi drove a debris flood down the Bhotekoshi. Layers from HOT on HDX.</p>
         </section>
-        <section class="gis-panel">
-          <h2>Basemap</h2>
-          <div class="basemap-list" id="basemap-list" role="radiogroup" aria-label="Basemap"></div>
-        </section>
+        <section class="gis-panel"><h2>Basemap</h2><div class="basemap-list" id="basemap-list" role="radiogroup"></div></section>
         <section class="gis-panel">
           <h2>Damage layers</h2>
-          <p style="margin:0 0 10px;font-size:0.82rem;color:var(--muted)">Check to show. Large layers load only when enabled.</p>
+          <p style="margin:0 0 10px;font-size:.82rem;color:var(--muted)">Check to show. Large layers load when enabled.</p>
           <ul class="layer-check" id="layer-list"></ul>
           <p class="status" id="status" aria-live="polite"></p>
         </section>
@@ -136,39 +89,26 @@
         </section>
       </aside>
       <div class="map-wrap">
-        <div id="map" role="application" aria-label="Rasuwa flood interactive map"></div>
+        <div id="map" role="application" aria-label="Rasuwa flood map"></div>
         <div class="map-credit" id="map-credit"></div>
       </div>
     </div>
-    <section class="news-panel" aria-label="Latest news on Rasuwa flood">
-      <div class="news-head">
-        <h2>Latest news</h2>
-        <span class="meta" id="news-meta">Loading…</span>
-      </div>
+    <section class="news-panel">
+      <div class="news-head"><h2>Latest news</h2><span class="meta" id="news-meta">Loading…</span></div>
       <div class="news-rail" id="news-rail"></div>
     </section>
-    <section class="faq" aria-label="Frequently asked questions">
-      <h2>Frequently asked questions</h2>
-      <details class="faq-item"><summary>What is the Rasuwa flood map?</summary><p>An interactive browser map of the 26 August 2026 Bhotekoshi–Trishuli flash flood in Rasuwa and downstream districts. It loads open Humanitarian OpenStreetMap Team (HOT) damage layers from the Humanitarian Data Exchange (HDX).</p></details>
-      <details class="faq-item"><summary>Where does the damage data come from?</summary><p>Open GeoJSON published on HDX by HOT: observed flood extent (27 August 2026), AI and manually validated building damage, destroyed/damaged OSM features, bridge damage assessment, and exposed hydropower sites.</p></details>
-      <details class="faq-item"><summary>Can I hide or show individual layers?</summary><p>Yes. Use the checkboxes in the left panel. Heavier layers (building damage) load only when you turn them on.</p></details>
-      <details class="faq-item"><summary>Is the news panel live?</summary><p>It requests recent public headlines about the Rasuwa / Bhotekoshi flood. If the feed cannot be reached, curated reference links are shown. Always cross-check with NDRRMA for casualty figures.</p></details>
+    <section class="faq">
+      <h2>FAQ</h2>
+      <details class="faq-item"><summary>What is this map?</summary><p>Browser map of the 26 Aug 2026 Bhotekoshi flood using open HOT damage layers from HDX.</p></details>
+      <details class="faq-item"><summary>Data source?</summary><p>Humanitarian OpenStreetMap Team exports on the Humanitarian Data Exchange (flood extent, bridges, hydropower, buildings).</p></details>
     </section>
-    <p class="related-tools"><strong>Related:</strong> <a href="/gis-map/">GIS map (upload your own GeoJSON)</a> <a href="/">All tools</a></p>
-    <p class="note" style="margin-top:16px">Data credits: Humanitarian OpenStreetMap Team (HOT) via HDX. Not an official government product. Verify figures with NDRRMA sitreps.</p>
+    <p class="note" style="margin-top:16px">Data: HOT via HDX. Not an official government product. Verify with NDRRMA.</p>
   </main>
-  <footer class="site-footer">
-    <div class="bar">
-      <p>© <span id="yr"></span> Nepali Utilities</p>
-      <div class="footer-nav">
-        <nav id="footer-menu" aria-label="Footer tools"></nav>
-        <nav class="legal" aria-label="Legal"><a href="/about/">About</a> <a href="/privacy/">Privacy</a></nav>
-      </div>
-    </div>
-  </footer>
+  <footer class="site-footer"><div class="bar"><p>© <span id="yr"></span> Nepali Utilities</p>
+    <div class="footer-nav"><nav id="footer-menu"></nav><nav class="legal"><a href="/about/">About</a> <a href="/privacy/">Privacy</a></nav></div></div></footer>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-  <script src="/assets/rasuwa-flood-map.js" defer></script>
+  <script src="/assets/rasuwa-flood-map.v2.js" defer></script>
   <script src="/assets/menu.js" defer></script>
 </body>
 </html>
